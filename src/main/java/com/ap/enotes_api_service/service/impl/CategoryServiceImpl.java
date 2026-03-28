@@ -2,12 +2,13 @@ package com.ap.enotes_api_service.service.impl;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-
+import com.ap.enotes_api_service.controller.CategoryController;
 import com.ap.enotes_api_service.dto.CategoryDto;
 import com.ap.enotes_api_service.dto.CategoryResponseDto;
 import com.ap.enotes_api_service.entity.Category;
@@ -61,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public List<CategoryDto> getAllCategories() {
 		// TODO Auto-generated method stub
-		List<Category> categories =  categoryRepository.findAll();
+		List<Category> categories =  categoryRepository.findAllByIsDeletedFalse();
 		
 		/*
 		 * Here we are extracting a list of categories from database and then by using
@@ -81,10 +82,39 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<CategoryResponseDto> getActiveCategories() {
 		// TODO Auto-generated method stub
 		
-		List<Category> categories = categoryRepository.findByisActiveTrue();
+		List<Category> categories = categoryRepository.findByIsActiveTrueAndIsDeletedFalse();
 		
 		List<CategoryResponseDto> categoryResponseDtoList = categories.stream().map(cat -> mapper.map(cat, CategoryResponseDto.class)).toList();
 		return categoryResponseDtoList;
+	}
+
+	@Override
+	public CategoryDto getCategoryById(Integer id) {
+		// TODO Auto-generated method stub
+		
+		Optional<Category> categoryById = categoryRepository.findByIdAndIsDeletedFalse(id);
+		
+		if(categoryById.isPresent()) {
+			Category category = categoryById.get();
+			return mapper.map(category, CategoryDto.class);
+		}
+		
+		return null;
+	}
+
+	@Override
+	public Boolean deleteCategoryById(Integer id) {
+		// TODO Auto-generated method stub
+		Optional<Category> categoryById = categoryRepository.findById(id);
+		
+		if(categoryById.isPresent()) {
+			Category category = categoryById.get();
+			category.setIsDeleted(true);
+			categoryRepository.save(category);
+			return true;
+		}
+		
+		return false;
 	}
 
 }
