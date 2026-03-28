@@ -22,5 +22,5 @@ public class CommonBaseModel {
 	
 	private Integer updatedBy;
 	
-	private Date updateDate;
+	private Date updatedDate;
 }
