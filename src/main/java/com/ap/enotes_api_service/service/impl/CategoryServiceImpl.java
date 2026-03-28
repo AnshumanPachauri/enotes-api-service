@@ -46,8 +46,13 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		Category category = mapper.map(categoryDto, Category.class);
 		
-		category.setIsDeleted(false);
-		category.setCreatedDate(new Date(0));
+		if(ObjectUtils.isEmpty(category.getId())) {
+			category.setIsDeleted(false);
+			category.setCreatedDate(new Date(0));
+		}
+		else {
+			updateCategory(category);
+		}
 		
 		Category savedCaegory =  categoryRepository.save(category);
 		
@@ -58,6 +63,22 @@ public class CategoryServiceImpl implements CategoryService {
 		return true;
 		
 	}
+	
+	private void updateCategory(Category category) {
+		Optional<Category> findExistingById = categoryRepository.findById(category.getId());
+		
+		if(findExistingById.isPresent()) {
+			Category existingCategory = findExistingById.get();
+			
+			category.setCreatedBy(existingCategory.getCreatedBy());
+			category.setCreatedDate(existingCategory.getCreatedDate());
+			category.setIsDeleted(existingCategory.getIsDeleted());
+			
+			category.setUpdatedBy(existingCategory.getUpdatedBy());
+			category.setUpdatedDate(new Date(0));
+		}
+	}
+	
 
 	@Override
 	public List<CategoryDto> getAllCategories() {
