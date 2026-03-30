@@ -12,6 +12,7 @@ import com.ap.enotes_api_service.controller.CategoryController;
 import com.ap.enotes_api_service.dto.CategoryDto;
 import com.ap.enotes_api_service.dto.CategoryResponseDto;
 import com.ap.enotes_api_service.entity.Category;
+import com.ap.enotes_api_service.exception.ResourceNotFoundException;
 import com.ap.enotes_api_service.repository.CategoryRepository;
 import com.ap.enotes_api_service.service.CategoryService;
 
@@ -110,14 +111,13 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryDto getCategoryById(Integer id) {
+	public CategoryDto getCategoryById(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
-		Optional<Category> categoryById = categoryRepository.findByIdAndIsDeletedFalse(id);
+		Category categoryById = categoryRepository.findByIdAndIsDeletedFalse(id).orElseThrow(() -> new ResourceNotFoundException("Category Not Found with Id = "+id));
 		
-		if(categoryById.isPresent()) {
-			Category category = categoryById.get();
-			return mapper.map(category, CategoryDto.class);
+		if(!ObjectUtils.isEmpty(categoryById)) {
+			return mapper.map(categoryById, CategoryDto.class);
 		}
 		
 		return null;
