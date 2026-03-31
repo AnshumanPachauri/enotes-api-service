@@ -15,6 +15,7 @@ import com.ap.enotes_api_service.entity.Category;
 import com.ap.enotes_api_service.exception.ResourceNotFoundException;
 import com.ap.enotes_api_service.repository.CategoryRepository;
 import com.ap.enotes_api_service.service.CategoryService;
+import com.ap.enotes_api_service.utils.Validation;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -23,16 +24,16 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private ModelMapper mapper;
+	@Autowired
+	private Validation validation;
 	
 	@Override
 	public Boolean saveCategory(CategoryDto categoryDto) {
 		// TODO Auto-generated method stub
 		
-//		Category category = new Category();
+//		Validation Checking
 		
-//		category.setName(categoryDto.getName());
-//		category.setDescription(categoryDto.getDescription());
-//		category.setIsActive(categoryDto.getIsActive());
+		validation.categoryValidation(categoryDto);
 		
 		/*
 		 * // this will map data from categoryDto to category class entities. // For

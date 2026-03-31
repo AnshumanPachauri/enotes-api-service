@@ -1,7 +1,14 @@
 package com.ap.enotes_api_service.exception;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -33,6 +40,30 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<?> ResourceNotFoundExceptionHandler(Exception e){
 		log.error("GlobalExceptionHandler :: ResourceNotFoundException :: ".concat(e.getMessage()));
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+	}
+	
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	public ResponseEntity<?> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e){
+//		
+//		List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
+//		
+//		Map<String, Object> errorMap = new LinkedHashMap<>();
+//		
+//		allErrors.stream().forEach(error -> {
+//			String msg = error.getDefaultMessage();
+//			String fields = ( (FieldError) (error)).getField();
+//			errorMap.put(fields, msg);
+//		} );
+//		
+////		log.error("GlobalExceptionHandler :: MethodArgumentNotValidExceptionHandler :: ".concat(e.getMessage()));
+//		return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+//	}
+	
+	@ExceptionHandler(ValidationException.class)
+	public ResponseEntity<?> handleValidationException(ValidationException e) {
+		log.error("GlobalExceptionHandler : handleValidationException() : {}", e.getErrors());
+//		return CommonUtil.createErrorResponse(e.getErrors(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(e.getErrors(), HttpStatus.BAD_REQUEST);
 	}
 	
 }
