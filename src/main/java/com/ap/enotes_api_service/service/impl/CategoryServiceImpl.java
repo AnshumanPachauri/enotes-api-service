@@ -12,6 +12,7 @@ import com.ap.enotes_api_service.controller.CategoryController;
 import com.ap.enotes_api_service.dto.CategoryDto;
 import com.ap.enotes_api_service.dto.CategoryResponseDto;
 import com.ap.enotes_api_service.entity.Category;
+import com.ap.enotes_api_service.exception.ExistingDataException;
 import com.ap.enotes_api_service.exception.ResourceNotFoundException;
 import com.ap.enotes_api_service.repository.CategoryRepository;
 import com.ap.enotes_api_service.service.CategoryService;
@@ -34,6 +35,14 @@ public class CategoryServiceImpl implements CategoryService {
 //		Validation Checking
 		
 		validation.categoryValidation(categoryDto);
+		
+		//checking if the category already exists or not....
+		
+		Boolean exists = categoryRepository.existsByName(categoryDto.getName().trim());
+		
+		if(exists) {
+				throw new ExistingDataException("Category with Name:- " + categoryDto.getName().trim() + ", already exists.");
+		}
 		
 		/*
 		 * // this will map data from categoryDto to category class entities. // For

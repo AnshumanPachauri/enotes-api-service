@@ -23,8 +23,8 @@ public class Validation {
 			if(ObjectUtils.isEmpty(categoryDto.getName())) {
 				error.put("Name", "Name Field cannot be empty or null");
 			}else {
-				if(categoryDto.getName().length() < 10) {
-					error.put("Name", "Name length is minimum 10");
+				if(categoryDto.getName().length() < 3) {
+					error.put("Name", "Name length is minimum 3");
 				}
 				if(categoryDto.getName().length() > 100) {
 					error.put("Name", "Name length is maximum 100");
@@ -38,8 +38,8 @@ public class Validation {
 				if(categoryDto.getDescription().length() < 10) {
 					error.put("Description", "Description length is minimum 10");
 				}
-				if(categoryDto.getDescription().length() > 100) {
-					error.put("Description", "Description length is maximum 100");
+				if(categoryDto.getDescription().length() > 1000) {
+					error.put("Description", "Description length is maximum 1000");
 				}
 			}
 
