@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -64,6 +65,20 @@ public class GlobalExceptionHandler {
 		log.error("GlobalExceptionHandler : handleValidationException() : {}", e.getErrors());
 //		return CommonUtil.createErrorResponse(e.getErrors(), HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<>(e.getErrors(), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(ExistingDataException.class)
+	public ResponseEntity<?> handleExistingDataException(ExistingDataException e) {
+		log.error("GlobalExceptionHandler : ExistingDataException() : {}", e.getMessage());
+//		return CommonUtil.createErrorResponse(e.getErrors(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+	}
+	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+		log.error("GlobalExceptionHandler : handleHttpMessageNotReadableException() : {}", e.getMessage());
+//		return CommonUtil.createErrorResponse(e.getErrors(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
 }
