@@ -1,22 +1,35 @@
 package com.ap.enotes_api_service.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ap.enotes_api_service.dto.NotesDto;
 import com.ap.enotes_api_service.dto.NotesDto.CategoryDto;
 import com.ap.enotes_api_service.entity.Category;
+import com.ap.enotes_api_service.entity.FileDetails;
 import com.ap.enotes_api_service.entity.Notes;
 import com.ap.enotes_api_service.exception.ResourceNotFoundException;
 import com.ap.enotes_api_service.repository.CategoryRepository;
+import com.ap.enotes_api_service.repository.FileRepository;
 import com.ap.enotes_api_service.repository.NotesRepository;
 import com.ap.enotes_api_service.service.NotesService;
+import com.ap.enotes_api_service.utils.CommonUtil;
 import com.ap.enotes_api_service.utils.Validation;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @Service
 public class NotesServiceImpl implements NotesService {
@@ -24,17 +37,22 @@ public class NotesServiceImpl implements NotesService {
 	@Autowired
 	private NotesRepository notesRepository;
 	@Autowired
-	private 	ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 	@Autowired
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private Validation validation;
+	@Value("${file.upload.path}")
+	private String uploadPath;
+	@Autowired
+	private FileRepository fileRepository;
 	
 	@Override
-	public Boolean saveNotes(NotesDto notesDto) throws Exception {
+	public Boolean saveNotes(String notes, MultipartFile multipartFile) throws Exception {
 		// TODO Auto-generated method stub
 		
-		
+		ObjectMapper objMp = new ObjectMapper();
+		NotesDto notesDto = objMp.readValue(notes, NotesDto.class);
 		
 		//Notes Validation
 		
@@ -45,20 +63,77 @@ public class NotesServiceImpl implements NotesService {
 		 * if the Category with given Id does not exist.
 		 */		
 		
-//		Integer CategoryId = notesDto.getCategory().getId();
-		
 		checkExistingCategory(notesDto.getCategory());
+		Notes mappedNotes = modelMapper.map(notesDto, Notes.class);
 		
-		Notes notes = modelMapper.map(notesDto, Notes.class);
+		//Save File
+		FileDetails fileDeails = saveFileDetails(multipartFile);
 		
-		Notes savedNote =  notesRepository.save(notes);
+		if(!ObjectUtils.isEmpty(fileDeails)) {
+			mappedNotes.setFileDetails(fileDeails);
+		}
+		else {
+			mappedNotes.setFileDetails(null);
+		}
 		
+		//Save Note
+		Notes savedNote =  notesRepository.save(mappedNotes);
 		if(!ObjectUtils.isEmpty(savedNote)) {
 			return true;
 		}
 		
 		return false;
 	}
+
+
+	private FileDetails saveFileDetails(MultipartFile multipartFile) throws IOException {
+		// TODO Auto-generated method stub
+		
+		if(!ObjectUtils.isEmpty(multipartFile) && !multipartFile.isEmpty()) {
+			FileDetails fileDetails = new FileDetails();
+			String originalFileName = multipartFile.getOriginalFilename();
+			fileDetails.setOriginalFileName(originalFileName);
+			fileDetails.setDisplayFileName(getDisplayName(originalFileName));
+			
+			String randomString = UUID.randomUUID().toString();
+			String uploadFileName = randomString+"."+FilenameUtils.getExtension(originalFileName);
+			fileDetails.setUploadFileName(uploadFileName);
+			
+			fileDetails.setFileSize(multipartFile.getSize());
+			
+			File saveFile = new File(uploadPath);
+			if(!saveFile.exists()) {
+				saveFile.mkdir();
+			}
+			
+			String storagePath = uploadPath.concat(uploadFileName);
+			fileDetails.setPath(storagePath);
+			
+			long upload = Files.copy(multipartFile.getInputStream(), Paths.get(storagePath));
+			if(upload!=0) {
+				FileDetails savedFile = fileRepository.save(fileDetails);
+				return savedFile;
+			}
+		}
+		return null;
+	}
+
+
+	private String getDisplayName(String originalFileName) {
+		// TODO Auto-generated method stub
+		
+		String extension = FilenameUtils.getExtension(originalFileName);
+		String fileNameWithoutExtension = FilenameUtils.removeExtension(originalFileName);
+		
+		if(fileNameWithoutExtension.length() > 8) {
+			fileNameWithoutExtension = fileNameWithoutExtension.substring(0, 7); 
+		}
+		
+		fileNameWithoutExtension = fileNameWithoutExtension + "." + extension;
+		
+		return fileNameWithoutExtension;
+	}
+
 
 	/*
 	 * //this function checks if the category id passed in a note is valid or

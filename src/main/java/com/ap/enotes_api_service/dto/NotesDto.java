@@ -23,7 +23,7 @@ public class NotesDto {
 	
 	private CategoryDto category;
 	
-	private Integer userId;
+//	private Integer userId;
 	
 	private Integer createdBy;
 	
@@ -33,6 +33,7 @@ public class NotesDto {
 	
 	private Date updatedDate;
 	
+	private FilesDto fileDetails;
 	
 	/*
 	 * Here we don't need everything from category class, as the above categoryDTO class
@@ -49,6 +50,17 @@ public class NotesDto {
 		
 		private Integer id;
 		private String name;
+		
+	}
+	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class FilesDto{
+		
+		private Integer id;
+		private String originalFileName;
+		private String displayFileName;
 		
 	}
 	

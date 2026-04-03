@@ -32,5 +32,7 @@ public class Notes extends CommonBaseModel{
 	private Category category;
 	
 //	private Integer userId;
+	@ManyToOne
+	private FileDetails fileDetails;
 	
 }
