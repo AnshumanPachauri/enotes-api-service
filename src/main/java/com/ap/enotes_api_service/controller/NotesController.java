@@ -1,0 +1,69 @@
+package com.ap.enotes_api_service.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.ap.enotes_api_service.dto.NotesDto;
+import com.ap.enotes_api_service.service.NotesService;
+import com.ap.enotes_api_service.utils.CommonUtil;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RestController
+@RequestMapping("/api/v1/notes")
+public class NotesController {
+
+	@Autowired
+	private NotesService notesService;
+	
+	/*
+	 * Changing the requestBody giving Notes from postman to controller......to
+	 * requestParams, so that we can get files from request params by using
+	 * multiPart and save them locally, we will not save the file in DB. we will
+	 * save it locally in a folder and while deploying we will save in s3 bucket.
+	 */
+	
+	@PostMapping("/")
+	public ResponseEntity<?> saveNotes(@RequestParam String notes, @RequestParam(required = false) MultipartFile multipartFile) throws Exception{
+		
+		/*
+		 * As our saveNotes method takes notesDto as input, we will have to change its
+		 * implementation so that it takes notes String and file, then convert the notes
+		 * sring to notes object.
+		 */
+		
+		Boolean saveNotes = notesService.saveNotes(notes, multipartFile);
+		
+		if(saveNotes) {
+			return CommonUtil.CreateBuildResponseMessage("Note Saved---Ho Gaya", HttpStatus.CREATED);
+		}
+		
+		return CommonUtil.CreateErrorResponseMessage("Note Not Saved---Nahi hua", HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping("/")
+	public ResponseEntity<?> getAllNotes(){
+		
+		List<NotesDto> allNotes = notesService.getAllNotes();
+		
+		if(CollectionUtils.isEmpty(allNotes)) {
+			return ResponseEntity.noContent().build();
+		}
+		
+		return CommonUtil.CreateBuildResponse(allNotes, HttpStatus.OK);
+	}
+	
+	
+}

@@ -1,6 +1,6 @@
 package com.ap.enotes_api_service.service.impl;
 
-import java.sql.Date;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import com.ap.enotes_api_service.controller.CategoryController;
 import com.ap.enotes_api_service.dto.CategoryDto;
 import com.ap.enotes_api_service.dto.CategoryResponseDto;
 import com.ap.enotes_api_service.entity.Category;
@@ -102,7 +101,7 @@ public class CategoryServiceImpl implements CategoryService {
 		 * from stream.map, we are mapping its data from category to categoryDto one by
 		 * one. then we take another category and do the same using mapper. Hence, the
 		 * stream.map gives one category at a time from list of categories, then
-		 * mapper.map maps data of each category to catedoryDto.
+		 * mapper.map maps data of each category to categoryDto.
 		 */
 		
 		List<CategoryDto> categoryDtoList = categories.stream().map(cat -> mapper.map(cat, CategoryDto.class)).toList();
