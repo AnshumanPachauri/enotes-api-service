@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import com.ap.enotes_api_service.dto.CategoryDto;
+import com.ap.enotes_api_service.dto.NotesDto;
 import com.ap.enotes_api_service.exception.ValidationException;
 
 @Component
@@ -49,6 +50,46 @@ public class Validation {
 			}else {
 				if(categoryDto.getIsActive() != Boolean.TRUE && categoryDto.getIsActive() != Boolean.FALSE) {
 					error.put("IsActive", "Invalid Value of IsActive Field");
+				}
+			}
+			
+		}
+		
+		if(!error.isEmpty()) {
+			throw new ValidationException(error);
+		}
+		
+	}
+	
+	
+	public void NotesValidation(NotesDto notesDto) {
+		Map<String, Object> error = new LinkedHashMap<String, Object>();
+		if(ObjectUtils.isEmpty(notesDto)) {
+			throw new IllegalArgumentException("Notes Object/JSON shouldn't be empty or null");
+		}
+		else {
+			
+			//Validation for Name Field.
+			if(ObjectUtils.isEmpty(notesDto.getTitle())) {
+				error.put("Title", "Title Field cannot be empty or null");
+			}else {
+				if(notesDto.getTitle().length() < 3) {
+					error.put("Title", "Title length is minimum 3");
+				}
+				if(notesDto.getTitle().length() > 100) {
+					error.put("Title", "Title length is maximum 100");
+				}
+			}
+			
+			//Validation for Description Field.
+			if(ObjectUtils.isEmpty(notesDto.getDescription())) {
+				error.put("Description", "Description Field cannot be empty or null");
+			}else {
+				if(notesDto.getDescription().length() < 10) {
+					error.put("Description", "Description length is minimum 10");
+				}
+				if(notesDto.getDescription().length() > 10000) {
+					error.put("Description", "Description length is maximum 10000");
 				}
 			}
 			
