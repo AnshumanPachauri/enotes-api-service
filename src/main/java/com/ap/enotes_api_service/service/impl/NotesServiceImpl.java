@@ -90,16 +90,10 @@ public class NotesServiceImpl implements NotesService {
 		// TODO Auto-generated method stub
 		
 		if(!ObjectUtils.isEmpty(multipartFile) && !multipartFile.isEmpty()) {
-			FileDetails fileDetails = new FileDetails();
-			String originalFileName = multipartFile.getOriginalFilename();
-			fileDetails.setOriginalFileName(originalFileName);
-			fileDetails.setDisplayFileName(getDisplayName(originalFileName));
 			
+			String originalFileName = multipartFile.getOriginalFilename();
 			String randomString = UUID.randomUUID().toString();
 			String uploadFileName = randomString+"."+FilenameUtils.getExtension(originalFileName);
-			fileDetails.setUploadFileName(uploadFileName);
-			
-			fileDetails.setFileSize(multipartFile.getSize());
 			
 			File saveFile = new File(uploadPath);
 			if(!saveFile.exists()) {
@@ -107,10 +101,15 @@ public class NotesServiceImpl implements NotesService {
 			}
 			
 			String storagePath = uploadPath.concat(uploadFileName);
-			fileDetails.setPath(storagePath);
-			
 			long upload = Files.copy(multipartFile.getInputStream(), Paths.get(storagePath));
+		
 			if(upload!=0) {
+				FileDetails fileDetails = new FileDetails();
+				fileDetails.setOriginalFileName(originalFileName);
+				fileDetails.setDisplayFileName(getDisplayName(originalFileName));
+				fileDetails.setUploadFileName(uploadFileName);
+				fileDetails.setFileSize(multipartFile.getSize());
+				fileDetails.setPath(storagePath);
 				FileDetails savedFile = fileRepository.save(fileDetails);
 				return savedFile;
 			}
