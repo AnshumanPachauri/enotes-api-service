@@ -1,6 +1,9 @@
 package com.ap.enotes_api_service.utils;
 
+import org.apache.commons.io.FilenameUtils;
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.ap.enotes_api_service.handler.GenericResponse;
@@ -55,6 +58,27 @@ public class CommonUtil {
 		
 		return response.createResponse();
 		
+	}
+
+	
+	public static String getContentType(String originalFileName) {
+		
+		String extension = FilenameUtils.getExtension(originalFileName);
+		
+		switch(extension) {
+		case "pdf":
+			return "applicaction/pdf";
+		case "xlsx":
+			return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+		case "txt":
+			return "text/plan";
+		case "png":
+			return "image/png";
+		case "jpeg":
+			return "image/jpeg";
+		default:
+			return "application/octet-stream";
+		}
 	}
 	
 	

@@ -1,5 +1,6 @@
 package com.ap.enotes_api_service.exception;
 
+import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +88,14 @@ public class GlobalExceptionHandler {
 //		return CommonUtil.createErrorResponse(e.getErrors(), HttpStatus.BAD_REQUEST);
 //		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		return CommonUtil.CreateErrorResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(FileNotFoundException.class)
+	public ResponseEntity<?> handleFileNotFoundException(FileNotFoundException e) {
+		log.error("GlobalExceptionHandler : handleFileNotFoundException() : {}", e.getMessage());
+//		return CommonUtil.createErrorResponse(e.getErrors(), HttpStatus.BAD_REQUEST);
+//		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		return CommonUtil.CreateErrorResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 	
 }
