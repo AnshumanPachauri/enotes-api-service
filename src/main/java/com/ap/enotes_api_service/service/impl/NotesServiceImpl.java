@@ -9,11 +9,16 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
+import org.apache.catalina.mapper.Mapper;
 import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StreamUtils;
@@ -21,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ap.enotes_api_service.dto.NotesDto;
 import com.ap.enotes_api_service.dto.NotesDto.CategoryDto;
+import com.ap.enotes_api_service.dto.NotesResponseDto;
 import com.ap.enotes_api_service.entity.Category;
 import com.ap.enotes_api_service.entity.FileDetails;
 import com.ap.enotes_api_service.entity.Notes;
@@ -183,6 +189,31 @@ public class NotesServiceImpl implements NotesService {
 		// TODO Auto-generated method stub
 		FileDetails fileDetails = fileRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("File Not Available with ID = " + id));
 		return fileDetails;
+	}
+
+
+	@Override
+	public NotesResponseDto getAllNotesByUser(Integer userId, Integer pageNo, Integer pageSize) {
+		/*
+		 * //Pagination m kitny page dikhany h or ek page m kitny notes dikhany
+		 * h-------(1,5)---2nd page m 5 notes dikhany h. page index0 sy start hota h.
+		 */		
+		
+		Pageable pagable = PageRequest.of(pageNo, pageSize);
+		Page<Notes> notesList = notesRepository.findAllByCreatedBy(userId, pagable);
+		
+		List<NotesDto> notesDtoList = notesList.get().map(note -> modelMapper.map(note, NotesDto.class)).toList();
+		
+		NotesResponseDto notesResponse = NotesResponseDto.builder()
+				.notes(notesDtoList)
+				.pageNumber(notesList.getNumber())
+				.pageSize(notesList.getSize())
+				.totalElements(notesList.getTotalElements())
+				.totalPages(notesList.getTotalPages())
+				.isFirst(notesList.isFirst())
+				.isLast(notesList.isLast())
+				.build();
+		return notesResponse;
 	}
 
 }

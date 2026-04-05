@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ap.enotes_api_service.dto.NotesDto;
+import com.ap.enotes_api_service.dto.NotesResponseDto;
 import com.ap.enotes_api_service.entity.FileDetails;
+import com.ap.enotes_api_service.entity.Notes;
 import com.ap.enotes_api_service.exception.ResourceNotFoundException;
 import com.ap.enotes_api_service.service.NotesService;
 import com.ap.enotes_api_service.utils.CommonUtil;
@@ -83,4 +86,21 @@ public class NotesController {
 		headers.setContentDispositionFormData("attachment", fileDetails.getOriginalFileName());
 		return ResponseEntity.ok().headers(headers).body(fileData);
 	}
+	
+	@GetMapping("/user-notes/{userId}")
+	public ResponseEntity<?> getAllNotesByUser(@RequestParam(name="pageNo",required = true, defaultValue = "0")  Integer pageNo,
+											@RequestParam(name="pageSize",required = true, defaultValue = "3")  Integer pageSize){
+		
+		Integer userId = 2;
+		
+		NotesResponseDto notes = notesService.getAllNotesByUser(userId, pageNo, pageSize);
+		
+		if(ObjectUtils.isEmpty(notes)) {
+			return ResponseEntity.noContent().build();
+		}
+		return CommonUtil.CreateBuildResponse(notes, HttpStatus.OK);
+	}
+	
+	
+	
 }
