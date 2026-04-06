@@ -240,11 +240,19 @@ public class NotesServiceImpl implements NotesService {
 
 	@Override
 	public void softDeleteNotes(Integer id) throws Exception {
-		// TODO Auto-generated method stub
-		
+
 		Notes notes = notesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Note not found with Id = "+id));
 		notes.setIsDeleted(true);
 		notes.setDeletedOn(new Date());
+		notesRepository.save(notes);
+	}
+
+
+	@Override
+	public void restoreNotes(Integer id) throws Exception {
+		Notes notes = notesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Note not found with Id = "+id));
+		notes.setIsDeleted(false);
+		notes.setDeletedOn(null);
 		notesRepository.save(notes);
 	}
 

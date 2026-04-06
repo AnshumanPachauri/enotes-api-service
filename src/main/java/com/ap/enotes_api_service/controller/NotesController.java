@@ -111,6 +111,15 @@ public class NotesController {
 		
 	}
 	
+	@GetMapping("/restore/{id}")
+	public ResponseEntity<?> restoreSoftDeletedNotes(@PathVariable Integer id) throws Exception{
+		
+		notesService.restoreNotes(id);
+		
+		return CommonUtil.CreateBuildResponseMessage("Note Restored with Id = " + id, HttpStatus.OK);
+		
+	}
+	
 	
 	
 }
