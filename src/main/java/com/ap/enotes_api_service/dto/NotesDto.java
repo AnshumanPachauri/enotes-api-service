@@ -35,6 +35,10 @@ public class NotesDto {
 	
 	private FilesDto fileDetails;
 	
+	private Boolean isDeleted;
+	
+	private Date deletedOn;
+	
 	/*
 	 * Here we don't need everything from category class, as the above categoryDTO class
 	 * is providing all the table columns data from category, but we only need Id

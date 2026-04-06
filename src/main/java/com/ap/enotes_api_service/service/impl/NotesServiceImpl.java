@@ -65,6 +65,9 @@ public class NotesServiceImpl implements NotesService {
 		ObjectMapper objMp = new ObjectMapper();
 		NotesDto notesDto = objMp.readValue(notes, NotesDto.class);
 		
+		notesDto.setIsDeleted(false);
+		notesDto.setDeletedOn(null);
+		
 		Integer notesId = notesDto.getId();
 		
 		if(!ObjectUtils.isEmpty(notesId)) {
@@ -221,7 +224,7 @@ public class NotesServiceImpl implements NotesService {
 		 */		
 		
 		Pageable pagable = PageRequest.of(pageNo, pageSize);
-		Page<Notes> notesList = notesRepository.findAllByCreatedBy(userId, pagable);
+		Page<Notes> notesList = notesRepository.findAllByCreatedByAndIsDeletedFalse(userId, pagable);
 		
 		List<NotesDto> notesDtoList = notesList.get().map(note -> modelMapper.map(note, NotesDto.class)).toList();
 		
@@ -254,6 +257,16 @@ public class NotesServiceImpl implements NotesService {
 		notes.setIsDeleted(false);
 		notes.setDeletedOn(null);
 		notesRepository.save(notes);
+	}
+
+
+	@Override
+	public List<NotesDto> getUserRecycleBinNotes(Integer userId) {
+		
+		List<Notes> recycleBinNotes = notesRepository.findByCreatedByAndIsDeletedTrue(userId);
+		List<NotesDto> notesDtoList = recycleBinNotes.stream().map(note -> modelMapper.map(note, NotesDto.class)).toList();
+		
+		return notesDtoList;
 	}
 
 }

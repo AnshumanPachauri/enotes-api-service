@@ -9,5 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ap.enotes_api_service.entity.Notes;
 
 public interface NotesRepository extends JpaRepository<Notes, Integer>{
-	Page<Notes> findAllByCreatedBy(Integer id, Pageable pagable);
+	Page<Notes> findAllByCreatedByAndIsDeletedFalse(Integer id, Pageable pagable);
+
+	List<Notes> findByCreatedByAndIsDeletedTrue(Integer userId);
+
 }
