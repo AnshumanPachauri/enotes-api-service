@@ -102,5 +102,15 @@ public class NotesController {
 	}
 	
 	
+	@GetMapping("/delete/{id}")
+	public ResponseEntity<?> deleteNotes(@PathVariable Integer id) throws Exception{
+		
+		notesService.softDeleteNotes(id);
+		
+		return CommonUtil.CreateBuildResponseMessage("Note Deleted with Id = " + id, HttpStatus.OK);
+		
+	}
+	
+	
 	
 }

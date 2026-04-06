@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ap.enotes_api_service.dto.NotesDto;
 import com.ap.enotes_api_service.dto.NotesDto.CategoryDto;
+import com.ap.enotes_api_service.dto.NotesDto.FilesDto;
 import com.ap.enotes_api_service.dto.NotesResponseDto;
 import com.ap.enotes_api_service.entity.Category;
 import com.ap.enotes_api_service.entity.FileDetails;
@@ -63,6 +65,12 @@ public class NotesServiceImpl implements NotesService {
 		ObjectMapper objMp = new ObjectMapper();
 		NotesDto notesDto = objMp.readValue(notes, NotesDto.class);
 		
+		Integer notesId = notesDto.getId();
+		
+		if(!ObjectUtils.isEmpty(notesId)) {
+			updateNotes(notesDto, multipartFile);
+		}
+		
 		//Notes Validation
 		
 		validation.NotesValidation(notesDto);
@@ -82,7 +90,9 @@ public class NotesServiceImpl implements NotesService {
 			mappedNotes.setFileDetails(fileDeails);
 		}
 		else {
-			mappedNotes.setFileDetails(null);
+			if(ObjectUtils.isEmpty(notesId)) {
+				mappedNotes.setFileDetails(null);
+			}
 		}
 		
 		//Save Note
@@ -92,6 +102,17 @@ public class NotesServiceImpl implements NotesService {
 		}
 		
 		return false;
+	}  
+
+
+	private void updateNotes(NotesDto notesDto, MultipartFile multipartFile) throws Exception {
+		// TODO Auto-generated method stub
+		Notes existingNotes = notesRepository.findById(notesDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Invalid Notes Id = " + notesDto.getId()));
+		
+		if(ObjectUtils.isEmpty(multipartFile)) {
+			notesDto.setFileDetails(modelMapper.map(existingNotes.getFileDetails(), FilesDto.class));
+		}
+		
 	}
 
 
@@ -214,6 +235,17 @@ public class NotesServiceImpl implements NotesService {
 				.isLast(notesList.isLast())
 				.build();
 		return notesResponse;
+	}
+
+
+	@Override
+	public void softDeleteNotes(Integer id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		Notes notes = notesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Note not found with Id = "+id));
+		notes.setIsDeleted(true);
+		notes.setDeletedOn(new Date());
+		notesRepository.save(notes);
 	}
 
 }
