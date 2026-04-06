@@ -1,5 +1,7 @@
 package com.ap.enotes_api_service.entity;
 
+import java.util.Date;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Entity;
@@ -34,5 +36,9 @@ public class Notes extends CommonBaseModel{
 //	private Integer userId;
 	@ManyToOne
 	private FileDetails fileDetails;
+	
+	private Boolean isDeleted;
+	
+	private Date deletedOn;
 	
 }

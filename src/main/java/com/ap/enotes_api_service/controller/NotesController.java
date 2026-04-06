@@ -102,5 +102,37 @@ public class NotesController {
 	}
 	
 	
+	@GetMapping("/delete/{id}")
+	public ResponseEntity<?> deleteNotes(@PathVariable Integer id) throws Exception{
+		
+		notesService.softDeleteNotes(id);
+		
+		return CommonUtil.CreateBuildResponseMessage("Note Deleted with Id = " + id, HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/restore/{id}")
+	public ResponseEntity<?> restoreSoftDeletedNotes(@PathVariable Integer id) throws Exception{
+		
+		notesService.restoreNotes(id);
+		return CommonUtil.CreateBuildResponseMessage("Note Restored with Id = " + id, HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/recycle-bin")
+	public ResponseEntity<?> getUserRecycleBinNotes() throws Exception{
+		
+		Integer userId = 2;
+		List<NotesDto> notesDto = notesService.getUserRecycleBinNotes(userId);
+		
+		if(CollectionUtils.isEmpty(notesDto)) {
+			return CommonUtil.CreateBuildResponseMessage("Notes not found in recycle bin", HttpStatus.OK);
+		}
+		
+		return CommonUtil.CreateBuildResponse(notesDto, HttpStatus.OK);
+		
+	}
+	
+	
 	
 }
