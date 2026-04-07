@@ -1,5 +1,6 @@
 package com.ap.enotes_api_service.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -12,5 +13,7 @@ public interface NotesRepository extends JpaRepository<Notes, Integer>{
 	Page<Notes> findAllByCreatedByAndIsDeletedFalse(Integer id, Pageable pagable);
 
 	List<Notes> findByCreatedByAndIsDeletedTrue(Integer userId);
+
+	List<Notes> findAllByIsDeletedAndDeletedOnBefore(boolean b, LocalDateTime minusDays);
 
 }
