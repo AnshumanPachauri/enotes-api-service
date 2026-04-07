@@ -1,5 +1,6 @@
 package com.ap.enotes_api_service.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.ap.enotes_api_service.entity.Category;
@@ -37,7 +38,7 @@ public class NotesDto {
 	
 	private Boolean isDeleted;
 	
-	private Date deletedOn;
+	private LocalDateTime deletedOn;
 	
 	/*
 	 * Here we don't need everything from category class, as the above categoryDTO class
