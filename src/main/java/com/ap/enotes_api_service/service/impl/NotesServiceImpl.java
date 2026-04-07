@@ -271,4 +271,17 @@ public class NotesServiceImpl implements NotesService {
 		return notesDtoList;
 	}
 
+
+	@Override
+	public void hardDeleteNotes(Integer id) throws Exception {
+
+		Notes notes = notesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Note not found with Id = "+id));
+		if(notes.getIsDeleted() == true) {
+			notesRepository.delete(notes);
+		}
+		else {
+			throw new IllegalArgumentException("Can't hard delete the note directly.");
+		}
+	}
+
 }

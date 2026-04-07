@@ -25,8 +25,8 @@ public class NotesScheduler {
         this.categoryController = categoryController;
     }
 	
-//	@Scheduled(cron = "0 0 0 * * *")
-	@Scheduled(cron = "* * * * * *")
+	@Scheduled(cron = "0 0 0 * * *")
+//	@Scheduled(cron = "* * * * * *")
 	public void deleteNotesScheduler() {
 		
 		LocalDateTime minusDays = LocalDateTime.now().minusDays(7);
