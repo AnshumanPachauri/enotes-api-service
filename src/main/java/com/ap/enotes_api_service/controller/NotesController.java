@@ -136,11 +136,19 @@ public class NotesController {
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> hardDeleteNotes(@PathVariable Integer id) throws Exception {
-		
+
 		notesService.hardDeleteNotes(id);
+		return CommonUtil.CreateBuildResponseMessage("Note Deleted with Id = " + id, HttpStatus.OK);	
+
+	}
+	
+	@DeleteMapping("/delete")
+	public ResponseEntity<?> emptyRecycleBin() throws Exception {
 		
-		return CommonUtil.CreateBuildResponseMessage("Note Deleted with Id = " + id, HttpStatus.OK);
-		
+		int userId = 2;
+		notesService.emptyRecycleBin(userId);
+		return CommonUtil.CreateBuildResponseMessage("Emptied the recycle bin for user = " + userId, HttpStatus.OK);	
+
 	}
 	
 }

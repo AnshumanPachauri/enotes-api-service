@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -281,6 +282,16 @@ public class NotesServiceImpl implements NotesService {
 		}
 		else {
 			throw new IllegalArgumentException("Can't hard delete the note directly.");
+		}
+	}
+
+
+	@Override
+	public void emptyRecycleBin(int userId) throws Exception {
+		
+		List<Notes> recycleBinNotes = notesRepository.findByCreatedByAndIsDeletedTrue(userId);
+		if(!CollectionUtils.isEmpty(recycleBinNotes)) {
+			notesRepository.deleteAll(recycleBinNotes);
 		}
 	}
 
