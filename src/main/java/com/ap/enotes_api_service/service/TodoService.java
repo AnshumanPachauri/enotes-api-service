@@ -6,7 +6,7 @@ import com.ap.enotes_api_service.dto.TodoDto;
 
 public interface TodoService {
 
-	public Boolean saveTodo(TodoDto todoDto);
+	public Boolean saveTodo(TodoDto todoDto) throws Exception;
 	
 	public TodoDto getTodoByid(Integer id) throws Exception;
 	

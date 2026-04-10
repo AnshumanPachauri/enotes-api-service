@@ -26,7 +26,7 @@ public class TodoController {
 	private TodoService todoService;
 	
 	@PostMapping("/")
-	public ResponseEntity<?> saveTodo(@RequestBody TodoDto todoDto){
+	public ResponseEntity<?> saveTodo(@RequestBody TodoDto todoDto) throws Exception{
 		
 		Boolean saveTodo = todoService.saveTodo(todoDto);
 		if(saveTodo) {

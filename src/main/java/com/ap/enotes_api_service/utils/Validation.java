@@ -8,6 +8,10 @@ import org.springframework.util.ObjectUtils;
 
 import com.ap.enotes_api_service.dto.CategoryDto;
 import com.ap.enotes_api_service.dto.NotesDto;
+import com.ap.enotes_api_service.dto.TodoDto;
+import com.ap.enotes_api_service.dto.TodoDto.StatusDto;
+import com.ap.enotes_api_service.enums.TodoStatus;
+import com.ap.enotes_api_service.exception.ResourceNotFoundException;
 import com.ap.enotes_api_service.exception.ValidationException;
 
 @Component
@@ -97,6 +101,24 @@ public class Validation {
 		
 		if(!error.isEmpty()) {
 			throw new ValidationException(error);
+		}
+		
+	}
+	
+	public void todoValidation(TodoDto todoDto) throws Exception {
+		
+		TodoStatus[] status = TodoStatus.values();
+		StatusDto todoDtoStatus = todoDto.getStatus();
+		Boolean statusFound = false;
+		
+		for(TodoStatus st : status) {
+			if(todoDtoStatus.getId().equals(st.getId())) {
+				statusFound = true;
+			}
+		}
+		
+		if(!statusFound) {
+			throw new ResourceNotFoundException("Invalid Status");
 		}
 		
 	}

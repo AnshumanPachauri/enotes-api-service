@@ -13,6 +13,7 @@ import com.ap.enotes_api_service.entity.Todo;
 import com.ap.enotes_api_service.exception.ResourceNotFoundException;
 import com.ap.enotes_api_service.repository.TodoRepository;
 import com.ap.enotes_api_service.service.TodoService;
+import com.ap.enotes_api_service.utils.Validation;
 
 @Service
 public class TodoServiceImpl implements TodoService {
@@ -21,11 +22,18 @@ public class TodoServiceImpl implements TodoService {
 	private TodoRepository todoRepository;
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private Validation validation;
 	
 	@Override
-	public Boolean saveTodo(TodoDto todoDto) {
+	public Boolean saveTodo(TodoDto todoDto) throws Exception {
+		
+		//Validation for todo Status.
+		
+		validation.todoValidation(todoDto);
 		
 		Todo mappedTodo = modelMapper.map(todoDto, Todo.class);
+		mappedTodo.setStatusId(todoDto.getStatus().getId());
 		Todo savedTodo = todoRepository.save(mappedTodo);
 		
 		if(ObjectUtils.isEmpty(savedTodo)) {

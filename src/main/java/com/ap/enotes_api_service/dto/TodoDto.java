@@ -17,7 +17,7 @@ public class TodoDto {
 	
 	private String title;
 	
-	private Integer status;
+	private StatusDto status;
 	
 	private Integer createdBy;
 	
@@ -26,4 +26,14 @@ public class TodoDto {
 	private Integer updatedBy;
 	
 	private Date updatedDate;
+	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Builder
+	public static class StatusDto{
+		private Integer id;
+		private String name;
+	}
+	
 }
