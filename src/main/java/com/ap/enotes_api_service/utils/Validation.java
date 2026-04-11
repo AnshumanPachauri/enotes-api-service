@@ -1,22 +1,31 @@
 package com.ap.enotes_api_service.utils;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import com.ap.enotes_api_service.dto.CategoryDto;
 import com.ap.enotes_api_service.dto.NotesDto;
 import com.ap.enotes_api_service.dto.TodoDto;
 import com.ap.enotes_api_service.dto.TodoDto.StatusDto;
+import com.ap.enotes_api_service.dto.UserDto;
 import com.ap.enotes_api_service.enums.TodoStatus;
 import com.ap.enotes_api_service.exception.ResourceNotFoundException;
 import com.ap.enotes_api_service.exception.ValidationException;
+import com.ap.enotes_api_service.repository.RoleRepository;
 
 @Component
 public class Validation {
 
+	@Autowired
+	private RoleRepository roleRepository;
+	
 	public void categoryValidation(CategoryDto categoryDto) {
 		Map<String, Object> error = new LinkedHashMap<String, Object>();
 		if(ObjectUtils.isEmpty(categoryDto)) {
@@ -119,6 +128,39 @@ public class Validation {
 		
 		if(!statusFound) {
 			throw new ResourceNotFoundException("Invalid Status");
+		}
+		
+	}
+	
+	public void userValidation(UserDto userDto) {
+		
+		if(!StringUtils.hasText(userDto.getFirstName())) {
+			throw new IllegalArgumentException("First Name is Invalid");
+		}
+		
+		if(!StringUtils.hasText(userDto.getLastName())) {
+			throw new IllegalArgumentException("Last Name is Invalid");
+		}
+		
+		if(!StringUtils.hasText(userDto.getEmail()) || !userDto.getEmail().matches(Constants.EMAIL_REGEX)) {
+			throw new IllegalArgumentException("Email is Invalid");
+		}
+		
+		if(!StringUtils.hasText(userDto.getMobileNumber()) || !userDto.getEmail().matches(Constants.MOBILE_NUMBER_REGEX)) {
+			throw new IllegalArgumentException("Mobile Number is Invalid");
+		}
+		
+		if(CollectionUtils.isEmpty(userDto.getRoles())) {
+			throw new IllegalArgumentException("Role Not given");
+		}
+		else {
+			List<Integer> rollIds = roleRepository.findAll().stream().map(r -> r.getId()).toList();
+			
+			List<Integer> invalidReqRollid = userDto.getRoles().stream().map(r -> r.getId()).filter(rollId -> !rollIds.contains(rollIds)).toList();
+			if(CollectionUtils.isEmpty(invalidReqRollid)){
+				throw new IllegalArgumentException("Role is Invalid" + invalidReqRollid);
+			}
+		
 		}
 		
 	}
