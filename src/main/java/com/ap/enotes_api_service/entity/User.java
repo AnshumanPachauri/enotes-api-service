@@ -30,6 +30,8 @@ public class User {
 	
 	private String Email;
 	
+	private String password;
+	
 	private String mobileNumber;
 	
 	@OneToMany(cascade = CascadeType.ALL)

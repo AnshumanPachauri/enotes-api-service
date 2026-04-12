@@ -22,7 +22,9 @@ public class UserDto {
 	
 	private String lastName;
 	
-	private String Email;
+	private String email;
+	
+	private String password;
 	
 	private String mobileNumber;
 
