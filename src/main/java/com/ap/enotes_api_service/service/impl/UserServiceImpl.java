@@ -1,11 +1,14 @@
 package com.ap.enotes_api_service.service.impl;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.ap.enotes_api_service.dto.UserDto;
+import com.ap.enotes_api_service.entity.Role;
 import com.ap.enotes_api_service.entity.User;
 import com.ap.enotes_api_service.repository.RoleRepository;
 import com.ap.enotes_api_service.repository.UserRepository;
@@ -31,7 +34,7 @@ public class UserServiceImpl implements UserService {
 		validation.userValidation(userDto);
 		
 		User mappedUser = modelMapper.map(userDto, User.class);
-		
+		setRoles(userDto, mappedUser);
 		User savedUser = userRepository.save(mappedUser);
 		
 		if(ObjectUtils.isEmpty(savedUser)) {
@@ -39,6 +42,13 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return true;
+	}
+
+	private void setRoles(UserDto userDto, User user) {
+		
+		List<Integer> roleIdList = userDto.getRoles().stream().map(role -> role.getId()).toList();
+		List<Role> allRolesById = roleRepository.findAllById(roleIdList);
+		user.setRoles(allRolesById);
 	}
 
 }

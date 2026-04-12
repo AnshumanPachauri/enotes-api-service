@@ -146,7 +146,7 @@ public class Validation {
 			throw new IllegalArgumentException("Email is Invalid");
 		}
 		
-		if(!StringUtils.hasText(userDto.getMobileNumber()) || !userDto.getEmail().matches(Constants.MOBILE_NUMBER_REGEX)) {
+		if(!StringUtils.hasText(userDto.getMobileNumber()) || !userDto.getMobileNumber().matches(Constants.MOBILE_NUMBER_REGEX)) {
 			throw new IllegalArgumentException("Mobile Number is Invalid");
 		}
 		
