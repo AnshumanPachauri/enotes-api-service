@@ -13,7 +13,7 @@ import com.ap.enotes_api_service.service.UserService;
 import com.ap.enotes_api_service.utils.CommonUtil;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
 	@Autowired
