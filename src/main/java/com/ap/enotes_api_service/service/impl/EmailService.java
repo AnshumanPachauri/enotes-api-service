@@ -1,6 +1,5 @@
-package com.ap.enotes_api_service.utils;
+package com.ap.enotes_api_service.service.impl;
 
-import java.io.UnsupportedEncodingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +12,7 @@ import com.ap.enotes_api_service.dto.EmailRequest;
 import jakarta.mail.internet.MimeMessage;
 
 @Component
-public class EmailSender {
+public class EmailService {
 
 	@Autowired
 	private JavaMailSender javaMailSender;
@@ -27,7 +26,7 @@ public class EmailSender {
 		mimeMessageHelper.setFrom(mailFrom, emailRequest.getTitle());
 		mimeMessageHelper.setTo(emailRequest.getTo());
 		mimeMessageHelper.setSubject(emailRequest.getSubject());
-		mimeMessageHelper.setText(emailRequest.getMessage());
+		mimeMessageHelper.setText(emailRequest.getMessage(), true);
 		javaMailSender.send(message);
 	}
 }
