@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import com.ap.enotes_api_service.dto.EmailRequest;
 import com.ap.enotes_api_service.dto.UserDto;
 import com.ap.enotes_api_service.entity.Role;
 import com.ap.enotes_api_service.entity.User;
@@ -27,9 +28,11 @@ public class UserServiceImpl implements UserService {
 	private Validation validation; 
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private EmailService emailService;
 	
 	@Override
-	public Boolean register(UserDto userDto) {
+	public Boolean register(UserDto userDto) throws Exception {
 		
 		validation.userValidation(userDto);
 		
@@ -40,8 +43,25 @@ public class UserServiceImpl implements UserService {
 		if(ObjectUtils.isEmpty(savedUser)) {
 			return false;
 		}
-		
+		sendEmail(savedUser);
 		return true;
+	}
+
+	private void sendEmail(User savedUser) throws Exception {
+		
+		String message = "Hi, <b>"+savedUser.getFirstName()+" </b> "
+				+ "<br> Your account is registered successfully.<br>"
+				+ "<br> Click the link below to verify your account.<br>"
+				+ "<a href = '#'> Click Here </a> <br><br>"
+				+ "Thanks, <br> Enotes.anshuman.com"; 
+		
+		EmailRequest emailRequest = EmailRequest.builder()
+				.to(savedUser.getEmail())
+				.subject("Account Registered Successfully.")
+				.title("Account Creation Confirmation.")
+				.message(message)
+				.build();
+		emailService.send(emailRequest);
 	}
 
 	private void setRoles(UserDto userDto, User user) {
