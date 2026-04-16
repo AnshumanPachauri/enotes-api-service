@@ -17,7 +17,7 @@ public class EmailSender {
 
 	@Autowired
 	private JavaMailSender javaMailSender;
-	@Value("${email.send.from}")
+	@Value("${spring.mail.username}")
 	private String mailFrom;
 	
 	public void send(EmailRequest emailRequest) throws Exception {
