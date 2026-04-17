@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.ap.enotes_api_service.entity.AccountStatus;
 import com.ap.enotes_api_service.entity.User;
 import com.ap.enotes_api_service.exception.ResourceNotFoundException;
+import com.ap.enotes_api_service.exception.SuccessException;
 import com.ap.enotes_api_service.repository.UserRepository;
 import com.ap.enotes_api_service.service.HomeService;
 
@@ -20,6 +21,10 @@ public class HomeServiceImpl implements HomeService {
 		// TODO Auto-generated method stub
 		
 		User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Invalid User"));
+		
+		if(user.getStatus().getVerificationCode() == null) {
+			throw new SuccessException("Account already verified");
+		}
 		
 		if(user.getStatus().getVerificationCode().equals(VerificationCode)) {
 			AccountStatus status = user.getStatus();
