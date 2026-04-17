@@ -61,7 +61,11 @@ public class UserServiceImpl implements UserService {
 		String message = "Hi, <b>"+savedUser.getFirstName()+" </b> "
 				+ "<br> Your account is registered successfully.<br>"
 				+ "<br> Click the link below to verify your account.<br>"
-				+ "<a href = '#'> Click Here </a> <br><br>"
+				+ "<a href='http://localhost:8080/api/v1/home/verify?id=" 
+				+ savedUser.getId() 
+				+ "&VC=" 
+				+ savedUser.getStatus().getVerificationCode() 
+				+ "'>Click Here</a><br><br>"
 				+ "Thanks, <br> Enotes.anshuman.com"; 
 		
 		EmailRequest emailRequest = EmailRequest.builder()
