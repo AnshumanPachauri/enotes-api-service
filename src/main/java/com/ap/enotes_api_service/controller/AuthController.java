@@ -12,6 +12,8 @@ import com.ap.enotes_api_service.dto.UserDto;
 import com.ap.enotes_api_service.service.UserService;
 import com.ap.enotes_api_service.utils.CommonUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -20,9 +22,11 @@ public class AuthController {
 	private UserService userService;
 	
 	@PostMapping("/")
-	public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) throws Exception{
+	public ResponseEntity<?> registerUser(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception{
 		
-		Boolean register = userService.register(userDto);
+		String url =  CommonUtil.getRequestUrl(request);
+		
+		Boolean register = userService.register(userDto, url);
 		
 		if(register) {
 			return CommonUtil.CreateBuildResponseMessage("user registered successfully", HttpStatus.CREATED);
