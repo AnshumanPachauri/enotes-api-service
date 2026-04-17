@@ -1,6 +1,7 @@
 package com.ap.enotes_api_service.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 
 import com.ap.enotes_api_service.dto.EmailRequest;
 import com.ap.enotes_api_service.dto.UserDto;
+import com.ap.enotes_api_service.entity.AccountStatus;
 import com.ap.enotes_api_service.entity.Role;
 import com.ap.enotes_api_service.entity.User;
 import com.ap.enotes_api_service.repository.RoleRepository;
@@ -38,6 +40,13 @@ public class UserServiceImpl implements UserService {
 		
 		User mappedUser = modelMapper.map(userDto, User.class);
 		setRoles(userDto, mappedUser);
+		
+		AccountStatus status = AccountStatus.builder()
+				.isActive(false)
+				.verificationCode(UUID.randomUUID().toString())
+				.build();
+		mappedUser.setStatus(status);
+		
 		User savedUser = userRepository.save(mappedUser);
 		
 		if(ObjectUtils.isEmpty(savedUser)) {
