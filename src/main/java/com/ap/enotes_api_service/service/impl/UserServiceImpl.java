@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 	private EmailService emailService;
 	
 	@Override
-	public Boolean register(UserDto userDto) throws Exception {
+	public Boolean register(UserDto userDto, String url) throws Exception {
 		
 		validation.userValidation(userDto);
 		
@@ -52,16 +52,16 @@ public class UserServiceImpl implements UserService {
 		if(ObjectUtils.isEmpty(savedUser)) {
 			return false;
 		}
-		sendEmail(savedUser);
+		sendEmail(savedUser, url);
 		return true;
 	}
 
-	private void sendEmail(User savedUser) throws Exception {
+	private void sendEmail(User savedUser, String url) throws Exception {
 		
 		String message = "Hi, <b>"+savedUser.getFirstName()+" </b> "
 				+ "<br> Your account is registered successfully.<br>"
 				+ "<br> Click the link below to verify your account.<br>"
-				+ "<a href='http://localhost:8080/api/v1/home/verify?id=" 
+				+ "<a href='"+url+"/api/v1/home/verify?id=" 
 				+ savedUser.getId() 
 				+ "&VC=" 
 				+ savedUser.getStatus().getVerificationCode() 
