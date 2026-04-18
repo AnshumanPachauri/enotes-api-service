@@ -39,7 +39,7 @@ public class CustomUserDetails implements UserDetails{
 			simpleGrantedAuthority.add(new SimpleGrantedAuthority(role.getName()));
 		});
 		
-		return null;
+		return simpleGrantedAuthority;
 	}
 
 	@Override
