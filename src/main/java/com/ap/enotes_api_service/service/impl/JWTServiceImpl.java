@@ -21,6 +21,11 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JWTServiceImpl implements JWTService {
 
+	/*
+	 * Secret key will be created evrytime the application restarts, as at the time
+	 * of restart the service will be autowired and the onstructor will be called.
+	 */
+	
 	private String secretKey = "";
 	
 	/*
@@ -45,8 +50,15 @@ public class JWTServiceImpl implements JWTService {
 	@Override
 	public String generateToken(User user) {
 		
+		/*
+		 * Token will be generated everytime the user tries to login, the secret key
+		 * will remain same until the application is restarted, but the token will be
+		 * changed on every login.
+		 */
+		
 		Map<String, Object> claims = new HashMap<>();
 		
+		claims.put("id", user.getId());
 		claims.put("roles", user.getRoles());
 		claims.put("status", user.getStatus().getIsActive());
 		

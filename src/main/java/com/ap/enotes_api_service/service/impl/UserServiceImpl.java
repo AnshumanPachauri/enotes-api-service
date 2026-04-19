@@ -108,6 +108,9 @@ public class UserServiceImpl implements UserService {
 			@Nullable
 			CustomUserDetails customUserDetails = (CustomUserDetails) authenticate.getPrincipal();
 			
+			//Token contains of 3 parts,
+			//Header-----Payload-----signature
+			
 			String token = jwtService.generateToken(customUserDetails.getUser());
 			
 			LoginResponseDto loginResponseDto = LoginResponseDto.builder()
