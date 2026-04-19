@@ -3,18 +3,25 @@ package com.ap.enotes_api_service.service.impl;
 import java.util.List;
 import java.util.UUID;
 
+import org.jspecify.annotations.Nullable;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.ap.enotes_api_service.dto.EmailRequest;
+import com.ap.enotes_api_service.dto.LoginRequestDto;
+import com.ap.enotes_api_service.dto.LoginResponseDto;
 import com.ap.enotes_api_service.dto.UserDto;
 import com.ap.enotes_api_service.entity.AccountStatus;
 import com.ap.enotes_api_service.entity.Role;
 import com.ap.enotes_api_service.entity.User;
 import com.ap.enotes_api_service.repository.RoleRepository;
 import com.ap.enotes_api_service.repository.UserRepository;
+import com.ap.enotes_api_service.security.CustomUserDetails;
 import com.ap.enotes_api_service.service.UserService;
 import com.ap.enotes_api_service.utils.Validation;
 
@@ -32,6 +39,8 @@ public class UserServiceImpl implements UserService {
 	private ModelMapper modelMapper;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	
 	@Override
 	public Boolean register(UserDto userDto, String url) throws Exception {
@@ -82,6 +91,27 @@ public class UserServiceImpl implements UserService {
 		List<Integer> roleIdList = userDto.getRoles().stream().map(role -> role.getId()).toList();
 		List<Role> allRolesById = roleRepository.findAllById(roleIdList);
 		user.setRoles(allRolesById);
+	}
+
+	@Override
+	public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+		Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword()));
+		
+		if(authenticate.isAuthenticated()) {
+			
+			@Nullable
+			CustomUserDetails customUserDetails = (CustomUserDetails) authenticate.getPrincipal();
+			
+			String token = "kkjrhgfkjrhgkjrrgasdkbasjfqnlnfkjgwer";
+			
+			LoginResponseDto loginResponseDto = LoginResponseDto.builder()
+					.userDto(modelMapper.map(customUserDetails.getUser(), UserDto.class))
+					.token(token)
+					.build();
+			return loginResponseDto;
+		}
+		
+		return null;
 	}
 
 }
