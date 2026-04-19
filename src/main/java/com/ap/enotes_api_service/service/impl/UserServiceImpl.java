@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import com.ap.enotes_api_service.config.security.CustomUserDetails;
 import com.ap.enotes_api_service.dto.EmailRequest;
 import com.ap.enotes_api_service.dto.LoginRequestDto;
 import com.ap.enotes_api_service.dto.LoginResponseDto;
@@ -22,7 +23,6 @@ import com.ap.enotes_api_service.entity.Role;
 import com.ap.enotes_api_service.entity.User;
 import com.ap.enotes_api_service.repository.RoleRepository;
 import com.ap.enotes_api_service.repository.UserRepository;
-import com.ap.enotes_api_service.security.CustomUserDetails;
 import com.ap.enotes_api_service.service.UserService;
 import com.ap.enotes_api_service.utils.Validation;
 
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 			@Nullable
 			CustomUserDetails customUserDetails = (CustomUserDetails) authenticate.getPrincipal();
 			
-			String token = "kkjrhgfkjrhgkjrrgasdkbasjfqnlnfkjgwer";
+			String token = "dbefhwlefhlwfhlwkefhwlkhewlfw";
 			
 			LoginResponseDto loginResponseDto = LoginResponseDto.builder()
 					.userDto(modelMapper.map(customUserDetails.getUser(), UserDto.class))

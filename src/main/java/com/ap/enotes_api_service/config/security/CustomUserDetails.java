@@ -1,4 +1,4 @@
-package com.ap.enotes_api_service.security;
+package com.ap.enotes_api_service.config.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
