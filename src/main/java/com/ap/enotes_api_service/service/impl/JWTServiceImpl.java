@@ -15,6 +15,12 @@ import io.jsonwebtoken.Jwts;
 @Service
 public class JWTServiceImpl implements JWTService {
 
+	private String secretKey = "";
+	
+	public JWTServiceImpl() {
+		
+	}
+
 	@Override
 	public String generateToken(User user) {
 		
