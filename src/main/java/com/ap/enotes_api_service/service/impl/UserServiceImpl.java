@@ -23,6 +23,7 @@ import com.ap.enotes_api_service.entity.Role;
 import com.ap.enotes_api_service.entity.User;
 import com.ap.enotes_api_service.repository.RoleRepository;
 import com.ap.enotes_api_service.repository.UserRepository;
+import com.ap.enotes_api_service.service.JWTService;
 import com.ap.enotes_api_service.service.UserService;
 import com.ap.enotes_api_service.utils.Validation;
 
@@ -44,6 +45,8 @@ public class UserServiceImpl implements UserService {
 	private AuthenticationManager authenticationManager;
 	@Autowired 
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	private JWTService jwtService;
 	
 	@Override
 	public Boolean register(UserDto userDto, String url) throws Exception {
@@ -105,7 +108,7 @@ public class UserServiceImpl implements UserService {
 			@Nullable
 			CustomUserDetails customUserDetails = (CustomUserDetails) authenticate.getPrincipal();
 			
-			String token = "dbefhwlefhlwfhlwkefhwlkhewlfw";
+			String token = jwtService.generateToken(customUserDetails.getUser());
 			
 			LoginResponseDto loginResponseDto = LoginResponseDto.builder()
 					.userDto(modelMapper.map(customUserDetails.getUser(), UserDto.class))
