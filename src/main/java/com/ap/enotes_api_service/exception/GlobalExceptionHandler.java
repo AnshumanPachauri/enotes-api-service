@@ -8,11 +8,13 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 import com.ap.enotes_api_service.utils.CommonUtil;
 
@@ -95,9 +97,15 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler(SuccessException.class)
-	public ResponseEntity<?> handleSuccessExceptionn(SuccessException e) {
-		log.error("GlobalExceptionHandler : handleSuccessExceptionn() : {}", e.getMessage());
+	public ResponseEntity<?> handleSuccessException(SuccessException e) {
+		log.error("GlobalExceptionHandler : handleSuccessException() : {}", e.getMessage());
 		return CommonUtil.CreateBuildResponseMessage(e.getMessage(), HttpStatus.OK);
+	}
+	
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e) {
+		log.error("GlobalExceptionHandler : handleBadCredentialsException() : {}", e.getMessage());
+		return CommonUtil.CreateBuildResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
 }

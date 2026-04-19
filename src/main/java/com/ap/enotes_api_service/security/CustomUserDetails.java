@@ -21,6 +21,14 @@ public class CustomUserDetails implements UserDetails{
 	 * returned in the form of a custmoUserDetail. using the parameterised constructor of this methohd.
 	 */
 	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public CustomUserDetails(User user) {
 		super();
 		this.user = user;
