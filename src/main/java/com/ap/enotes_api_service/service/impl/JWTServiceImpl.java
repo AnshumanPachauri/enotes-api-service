@@ -99,8 +99,15 @@ public class JWTServiceImpl implements JWTService {
 
 	@Override
 	public Boolean validateToken(String token, UserDetails customUserDetails) {
-		// TODO Auto-generated method stub
-		return null;
+		String userName = extractUsername(token);
+		Boolean isTokenExpired = isExtractedTokenExpired(token);
+		
+		if(userName.equalsIgnoreCase(customUserDetails.getUsername()) && !isTokenExpired) return true;
+		return false;
+	}
+	private Boolean isExtractedTokenExpired(String token) {
+		Claims userClaims = extractAllClaims(token);
+		return userClaims.getExpiration().before(new Date());
 	}
 
 }
