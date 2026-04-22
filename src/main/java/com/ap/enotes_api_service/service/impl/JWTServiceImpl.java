@@ -9,11 +9,13 @@ import java.util.Map;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.ap.enotes_api_service.entity.User;
 import com.ap.enotes_api_service.service.JWTService;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -66,7 +68,7 @@ public class JWTServiceImpl implements JWTService {
 		.claims().add(claims)
 		.subject(user.getEmail())
 		.issuedAt(new Date(System.currentTimeMillis()))
-		.expiration(new Date(System.currentTimeMillis()+60*60*10))
+		.expiration(new Date(System.currentTimeMillis()+60*60*60*10))
 		.and()
 		.signWith(getKey())
 		.compact();
@@ -77,6 +79,35 @@ public class JWTServiceImpl implements JWTService {
 	private Key getKey() {
 		byte[] decodedKeyBytes = Decoders.BASE64.decode(secretKey);
 		return Keys.hmacShaKeyFor(decodedKeyBytes);
+	}
+
+	@Override
+	public String extractUsername(String token) {
+		Claims claims = extractAllClaims(token);
+		return claims.getSubject();
+	}
+
+	private Claims extractAllClaims(String token) {
+		Claims claimsPayload = Jwts.parser().verifyWith(decryptKey(secretKey)).build().parseSignedClaims(token).getPayload();
+		return claimsPayload;
+	}
+
+	private SecretKey decryptKey(String secretKey) {
+		byte[] decodeKeyBytes = Decoders.BASE64.decode(secretKey);
+		return Keys.hmacShaKeyFor(decodeKeyBytes);
+	}
+
+	@Override
+	public Boolean validateToken(String token, UserDetails customUserDetails) {
+		String userName = extractUsername(token);
+		Boolean isTokenExpired = isExtractedTokenExpired(token);
+		
+		if(userName.equalsIgnoreCase(customUserDetails.getUsername()) && !isTokenExpired) return true;
+		return false;
+	}
+	private Boolean isExtractedTokenExpired(String token) {
+		Claims userClaims = extractAllClaims(token);
+		return userClaims.getExpiration().before(new Date());
 	}
 
 }
