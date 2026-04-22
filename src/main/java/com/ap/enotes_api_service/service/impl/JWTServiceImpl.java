@@ -88,8 +88,15 @@ public class JWTServiceImpl implements JWTService {
 	}
 
 	private Claims extractAllClaims(String token) {
-		Claims claimsPayload = Jwts.parser().verifyWith(decryptKey(secretKey)).build().parseSignedClaims(token).getPayload();
-		return claimsPayload;
+		
+		try {
+			Claims claimsPayload = Jwts.parser().verifyWith(decryptKey(secretKey)).build().parseSignedClaims(token).getPayload();
+			return claimsPayload;
+		}
+		catch (Exception e) {
+			throw e;
+		}
+		
 	}
 
 	private SecretKey decryptKey(String secretKey) {
