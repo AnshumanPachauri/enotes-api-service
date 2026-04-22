@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ public class TodoController {
 	private TodoService todoService;
 	
 	@PostMapping("/")
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> saveTodo(@RequestBody TodoDto todoDto) throws Exception{
 		
 		Boolean saveTodo = todoService.saveTodo(todoDto);
@@ -36,6 +38,7 @@ public class TodoController {
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> getTodoById(@PathVariable Integer id) throws Exception{
 		
 		TodoDto todoById = todoService.getTodoByid(id);
@@ -43,6 +46,7 @@ public class TodoController {
 	}
 	
 	@GetMapping("/user-todo")
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> getTodoByUser() throws Exception{
 		
 		List<TodoDto> todosByUser = todoService.getTodoByUser();

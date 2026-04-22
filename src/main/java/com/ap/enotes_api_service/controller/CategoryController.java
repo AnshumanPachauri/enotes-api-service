@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,6 +35,7 @@ public class CategoryController {
 	private CategoryService categoryService;
 	
 	@PostMapping("/save")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> saveCategory(@Valid @RequestBody CategoryDto categoryDto) {
 		
 		Boolean saveCatedory = categoryService.saveCategory(categoryDto);
@@ -49,6 +51,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getAllCategory(){
 		List<CategoryDto> allCategories = categoryService.getAllCategories();
 		
@@ -63,6 +66,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/active")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<?> getActiveCategory(){
 		
 		List<CategoryResponseDto> activeCategories = categoryService.getActiveCategories();
@@ -79,6 +83,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getCategoryDetailsById(@PathVariable Integer id) throws Exception{
 		
 		CategoryDto categoryDto;
@@ -93,6 +98,7 @@ public class CategoryController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> deleteCategoryDetailsById(@PathVariable Integer id){
 		
 		Boolean deleted = categoryService.deleteCategoryById(id);
