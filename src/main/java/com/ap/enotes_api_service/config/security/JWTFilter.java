@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,6 +21,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class JWTFilter extends OncePerRequestFilter{
 
 	@Autowired
@@ -31,8 +33,8 @@ public class JWTFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String authHeader = request.getHeader("Authorization");
-		String token = "";
-		String username = "";
+		String token = null;
+		String username = null;
 		
 		
 		if(authHeader !=  null && authHeader.startsWith(authHeader)) {
@@ -54,6 +56,7 @@ public class JWTFilter extends OncePerRequestFilter{
 			}
 			
 		}
+		filterChain.doFilter(request, response);
 		
 	}
 
