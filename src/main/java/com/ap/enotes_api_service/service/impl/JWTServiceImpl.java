@@ -13,9 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.ap.enotes_api_service.entity.User;
+import com.ap.enotes_api_service.exception.JwtAuthenticationException;
+import com.ap.enotes_api_service.exception.JwtTokenExpiredException;
 import com.ap.enotes_api_service.service.JWTService;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -92,6 +96,12 @@ public class JWTServiceImpl implements JWTService {
 		try {
 			Claims claimsPayload = Jwts.parser().verifyWith(decryptKey(secretKey)).build().parseSignedClaims(token).getPayload();
 			return claimsPayload;
+		}
+		catch (ExpiredJwtException e) {
+			throw new JwtTokenExpiredException("Your JWT Token is expired....");
+		}
+		catch(JwtException e) {
+			throw new JwtAuthenticationException("Invalid Jwt Token...");
 		}
 		catch (Exception e) {
 			throw e;
