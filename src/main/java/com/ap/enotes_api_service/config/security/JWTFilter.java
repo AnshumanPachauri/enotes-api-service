@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.Security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.ap.enotes_api_service.handler.GenericResponse;
 import com.ap.enotes_api_service.service.JWTService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,6 +35,8 @@ public class JWTFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		
+		try {
 		String authHeader = request.getHeader("Authorization");
 		String token = null;
 		String username = null;
@@ -55,6 +60,17 @@ public class JWTFilter extends OncePerRequestFilter{
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 			
+		}
+		}catch (Exception e) {
+//			e.printStackTrace();
+			response.setContentType("application/json");
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			Object errorBody = GenericResponse.builder()
+			.message(e.getMessage())
+			.status("Failed")
+			.responseStatus(HttpStatus.UNAUTHORIZED).build().createResponse().getBody();
+			response.getWriter().write(new ObjectMapper().writeValueAsString(errorBody));
+			return; 
 		}
 		filterChain.doFilter(request, response);
 		
