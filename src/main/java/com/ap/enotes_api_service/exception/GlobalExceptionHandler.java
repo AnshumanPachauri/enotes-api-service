@@ -1,6 +1,7 @@
 package com.ap.enotes_api_service.exception;
 
 import java.io.FileNotFoundException;
+import java.nio.file.AccessDeniedException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<?> ExceptionHandler(Exception e){
 		log.error("GlobalExceptionHandler :: ExceptionHandler :: ".concat(e.getMessage()));
 		return CommonUtil.CreateErrorResponseMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<?> AccessDeniedExceptionHandler(AccessDeniedException e){
+		log.error("GlobalExceptionHandler :: AccessDeniedExceptionHandler :: ".concat(e.getMessage()));
+		return CommonUtil.CreateErrorResponseMessage(e.getMessage(), HttpStatus.FORBIDDEN);
 	}
 	
 	@ExceptionHandler(NullPointerException.class)
