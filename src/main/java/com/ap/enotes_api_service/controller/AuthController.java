@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ap.enotes_api_service.dto.LoginRequestDto;
 import com.ap.enotes_api_service.dto.LoginResponseDto;
-import com.ap.enotes_api_service.dto.UserDto;
+import com.ap.enotes_api_service.dto.UserRequestDto;
 import com.ap.enotes_api_service.service.UserService;
 import com.ap.enotes_api_service.utils.CommonUtil;
 
@@ -25,7 +25,7 @@ public class AuthController {
 	private UserService userService;
 	
 	@PostMapping("/")
-	public ResponseEntity<?> registerUser(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception{
+	public ResponseEntity<?> registerUser(@RequestBody UserRequestDto userDto, HttpServletRequest request) throws Exception{
 		
 		String url =  CommonUtil.getRequestUrl(request);
 		

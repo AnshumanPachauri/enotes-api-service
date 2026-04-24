@@ -5,7 +5,11 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.ap.enotes_api_service.config.security.CustomUserDetails;
+import com.ap.enotes_api_service.dto.UserResponseDto;
+import com.ap.enotes_api_service.entity.User;
 import com.ap.enotes_api_service.handler.GenericResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -90,6 +94,16 @@ public class CommonUtil {
 		return serverUrl;
 	}
 	
+	public static User getLoggedInUser() {
+		try {
+		
+			CustomUserDetails loggedInuser =  (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return loggedInuser.getUser();	
+			
+		}catch (Exception e) {
+			throw e; 
+		}
+	} 
 	
 	
 }

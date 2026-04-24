@@ -17,7 +17,7 @@ import com.ap.enotes_api_service.config.security.CustomUserDetails;
 import com.ap.enotes_api_service.dto.EmailRequest;
 import com.ap.enotes_api_service.dto.LoginRequestDto;
 import com.ap.enotes_api_service.dto.LoginResponseDto;
-import com.ap.enotes_api_service.dto.UserDto;
+import com.ap.enotes_api_service.dto.UserRequestDto;
 import com.ap.enotes_api_service.entity.AccountStatus;
 import com.ap.enotes_api_service.entity.Role;
 import com.ap.enotes_api_service.entity.User;
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 	private JWTService jwtService;
 	
 	@Override
-	public Boolean register(UserDto userDto, String url) throws Exception {
+	public Boolean register(UserRequestDto userDto, String url) throws Exception {
 		
 		validation.userValidation(userDto);
 		
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
 		emailService.send(emailRequest);
 	}
 
-	private void setRoles(UserDto userDto, User user) {
+	private void setRoles(UserRequestDto userDto, User user) {
 		
 		List<Integer> roleIdList = userDto.getRoles().stream().map(role -> role.getId()).toList();
 		List<Role> allRolesById = roleRepository.findAllById(roleIdList);
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
 			String token = jwtService.generateToken(customUserDetails.getUser());
 			
 			LoginResponseDto loginResponseDto = LoginResponseDto.builder()
-					.userDto(modelMapper.map(customUserDetails.getUser(), UserDto.class))
+					.userDto(modelMapper.map(customUserDetails.getUser(), UserRequestDto.class))
 					.token(token)
 					.build();
 			return loginResponseDto;

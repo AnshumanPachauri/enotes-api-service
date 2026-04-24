@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class LoginResponseDto {
 
-	private UserDto userDto;
+	private UserRequestDto userDto;
 	
 	private String token;
 	
