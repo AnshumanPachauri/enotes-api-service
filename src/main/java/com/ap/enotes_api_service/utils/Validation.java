@@ -14,7 +14,7 @@ import com.ap.enotes_api_service.dto.CategoryDto;
 import com.ap.enotes_api_service.dto.NotesDto;
 import com.ap.enotes_api_service.dto.TodoDto;
 import com.ap.enotes_api_service.dto.TodoDto.StatusDto;
-import com.ap.enotes_api_service.dto.UserDto;
+import com.ap.enotes_api_service.dto.UserRequestDto;
 import com.ap.enotes_api_service.enums.TodoStatus;
 import com.ap.enotes_api_service.exception.ExistingDataException;
 import com.ap.enotes_api_service.exception.ResourceNotFoundException;
@@ -137,7 +137,7 @@ public class Validation {
 		
 	}
 	
-	public void userValidation(UserDto userDto) {
+	public void userValidation(UserRequestDto userDto) {
 		
 		if(!StringUtils.hasText(userDto.getFirstName())) {
 			throw new IllegalArgumentException("First Name is Invalid");
