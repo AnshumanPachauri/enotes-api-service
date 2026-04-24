@@ -95,9 +95,14 @@ public class CommonUtil {
 	}
 	
 	public static User getLoggedInUser() {
+		try {
 		
-		CustomUserDetails loggedInuser =  (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return loggedInuser.getUser();
+			CustomUserDetails loggedInuser =  (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return loggedInuser.getUser();	
+			
+		}catch (Exception e) {
+			throw e; 
+		}
 	} 
 	
 	
