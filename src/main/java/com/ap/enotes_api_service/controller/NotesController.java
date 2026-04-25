@@ -98,9 +98,7 @@ public class NotesController {
 	public ResponseEntity<?> getAllNotesByUser(@RequestParam(name="pageNo",required = true, defaultValue = "0")  Integer pageNo,
 											@RequestParam(name="pageSize",required = true, defaultValue = "3")  Integer pageSize){
 		
-		Integer userId = 2;
-		
-		NotesResponseDto notes = notesService.getAllNotesByUser(userId, pageNo, pageSize);
+		NotesResponseDto notes = notesService.getAllNotesByUser(pageNo, pageSize);
 		
 		if(ObjectUtils.isEmpty(notes)) {
 			return ResponseEntity.noContent().build();
@@ -132,8 +130,7 @@ public class NotesController {
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> getUserRecycleBinNotes() throws Exception{
 		
-		Integer userId = 2;
-		List<NotesDto> notesDto = notesService.getUserRecycleBinNotes(userId);
+		List<NotesDto> notesDto = notesService.getUserRecycleBinNotes();
 		
 		if(CollectionUtils.isEmpty(notesDto)) {
 			return CommonUtil.CreateBuildResponseMessage("Notes not found in recycle bin", HttpStatus.OK);
@@ -156,9 +153,8 @@ public class NotesController {
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> emptyRecycleBin() throws Exception {
 		
-		int userId = 2;
-		notesService.emptyRecycleBin(userId);
-		return CommonUtil.CreateBuildResponseMessage("Emptied the recycle bin for user = " + userId, HttpStatus.OK);	
+		notesService.emptyRecycleBin();
+		return CommonUtil.CreateBuildResponseMessage("Emptied the recycle bin for user.", HttpStatus.OK);	
 
 	}
 	

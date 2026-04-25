@@ -4,6 +4,9 @@ import java.util.Optional;
 
 import org.springframework.data.domain.AuditorAware;
 
+import com.ap.enotes_api_service.entity.User;
+import com.ap.enotes_api_service.utils.CommonUtil;
+
 public class AuditAwareConfig implements AuditorAware<Integer>{
 
 	
@@ -14,8 +17,13 @@ public class AuditAwareConfig implements AuditorAware<Integer>{
 	 */	
 	@Override
 	public Optional<Integer> getCurrentAuditor() {
-		// TODO Auto-generated method stub
-		return Optional.of(2);
+		
+		//We will get the currently logged In User.
+		User loggedInUser = CommonUtil.getLoggedInUser();
+		
+//		return Optional.of(2);
+		return Optional.of(loggedInUser.getId());
+		
 	}
 
 }
