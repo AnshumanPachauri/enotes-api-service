@@ -18,6 +18,7 @@ import com.ap.enotes_api_service.dto.EmailRequest;
 import com.ap.enotes_api_service.dto.LoginRequestDto;
 import com.ap.enotes_api_service.dto.LoginResponseDto;
 import com.ap.enotes_api_service.dto.UserRequestDto;
+import com.ap.enotes_api_service.dto.UserResponseDto;
 import com.ap.enotes_api_service.entity.AccountStatus;
 import com.ap.enotes_api_service.entity.Role;
 import com.ap.enotes_api_service.entity.User;
@@ -114,7 +115,7 @@ public class AuthServiceImpl implements AuthService {
 			String token = jwtService.generateToken(customUserDetails.getUser());
 			
 			LoginResponseDto loginResponseDto = LoginResponseDto.builder()
-					.userDto(modelMapper.map(customUserDetails.getUser(), UserRequestDto.class))
+					.userDto(modelMapper.map(customUserDetails.getUser(), UserResponseDto.class))
 					.token(token)
 					.build();
 			return loginResponseDto;
