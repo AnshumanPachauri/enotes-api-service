@@ -24,12 +24,12 @@ import com.ap.enotes_api_service.entity.User;
 import com.ap.enotes_api_service.repository.RoleRepository;
 import com.ap.enotes_api_service.repository.UserRepository;
 import com.ap.enotes_api_service.service.JWTService;
-import com.ap.enotes_api_service.service.UserService;
+import com.ap.enotes_api_service.service.AuthService;
 import com.ap.enotes_api_service.utils.Validation;
 
 
 @Service
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	private UserRepository userRepository;
