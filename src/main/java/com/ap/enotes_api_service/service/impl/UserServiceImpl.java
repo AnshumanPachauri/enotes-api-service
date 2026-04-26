@@ -1,6 +1,7 @@
 package com.ap.enotes_api_service.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import com.ap.enotes_api_service.utils.CommonUtil;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -23,11 +24,11 @@ public class UserServiceImpl implements UserService {
 		
 		User loggedInUser = CommonUtil.getLoggedInUser();
 		
-		if(!passwordEncoder.matches(loggedInUser.getPassword(), passwordChangeRequest.toString())) {
+		if(!bCryptPasswordEncoder.matches(passwordChangeRequest.getOldPassword(), loggedInUser.getPassword())) {
 			throw new IllegalArgumentException("Your Old Password is incorrect!!!");
 		}
 		
-		loggedInUser.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
+		loggedInUser.setPassword(bCryptPasswordEncoder.encode(passwordChangeRequest.getNewPassword()));
 		userRepository.save(loggedInUser);
 	}
 
