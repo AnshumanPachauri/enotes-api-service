@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ap.enotes_api_service.dto.LoginRequestDto;
 import com.ap.enotes_api_service.dto.LoginResponseDto;
 import com.ap.enotes_api_service.dto.UserRequestDto;
-import com.ap.enotes_api_service.service.UserService;
+import com.ap.enotes_api_service.service.AuthService;
 import com.ap.enotes_api_service.utils.CommonUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,14 +22,14 @@ import jakarta.servlet.http.HttpServletRequest;
 public class AuthController {
 
 	@Autowired
-	private UserService userService;
+	private AuthService authService;
 	
 	@PostMapping("/")
 	public ResponseEntity<?> registerUser(@RequestBody UserRequestDto userDto, HttpServletRequest request) throws Exception{
 		
 		String url =  CommonUtil.getRequestUrl(request);
 		
-		Boolean register = userService.register(userDto, url);
+		Boolean register = authService.register(userDto, url);
 		
 		if(register) {
 			return CommonUtil.CreateBuildResponseMessage("user registered successfully", HttpStatus.CREATED);
@@ -41,7 +41,7 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception{
 		
-		LoginResponseDto loginResponseDto = userService.login(loginRequestDto);
+		LoginResponseDto loginResponseDto = authService.login(loginRequestDto);
 		
 		if(!ObjectUtils.isEmpty(loginResponseDto)) {
 			return CommonUtil.CreateBuildResponse(loginResponseDto, HttpStatus.OK);
