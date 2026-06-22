@@ -40,7 +40,7 @@ public class HomeController {
 	}
 	
 	@GetMapping("/verify-password-link")
-	public ResponseEntity<?> VerifyPasswordResetLink(){
+	public ResponseEntity<?> VerifyPasswordResetLink(@RequestParam Integer userId, @RequestParam String code){
 		return null;
 	}
 	

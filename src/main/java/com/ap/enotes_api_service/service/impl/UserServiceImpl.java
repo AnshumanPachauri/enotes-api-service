@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 		User userByEmail = userRepository.findByEmail(email);
 		
 		if(ObjectUtils.isEmpty(userByEmail)) {
-			throw new ResourceNotFoundException("User with Email :- "+email+" Not FOund.");
+			throw new ResourceNotFoundException("User with Email :- "+email+" Not Found.");
 		}
 		
 		//Generating password Reset TOken.
