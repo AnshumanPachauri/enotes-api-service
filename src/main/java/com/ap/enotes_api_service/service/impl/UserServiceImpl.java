@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import com.ap.enotes_api_service.dto.EmailRequest;
 import com.ap.enotes_api_service.dto.PasswordChangeRequest;
@@ -80,6 +81,34 @@ public class UserServiceImpl implements UserService {
 				.build();
 		emailService.send(emailRequest);
 
+	}
+
+	@Override
+	public void verifyPasswordResetLink(Integer userId, String code) throws Exception {
+		User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException(code));
+		
+		verifyPasswordResetToken(user.getStatus().getPasswordResetToken(), code);
+		
+	}
+
+	private void verifyPasswordResetToken(String existingToken, String verificationRequestToken) {
+		
+		//Request token not null
+		if(StringUtils.hasText(verificationRequestToken)) {
+			
+			//Existing token not null i.e. password already reset.
+			if(!StringUtils.hasText(existingToken)) {
+				throw new IllegalArgumentException("Password already reset.");
+			}
+			
+			if(!existingToken.equals(verificationRequestToken)){
+				throw new IllegalArgumentException("invalid url.");
+			}
+		}
+		else {
+			throw new IllegalArgumentException("invalid token.");
+		}
+		
 	}
 
 }

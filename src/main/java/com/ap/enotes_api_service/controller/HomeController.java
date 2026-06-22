@@ -40,8 +40,9 @@ public class HomeController {
 	}
 	
 	@GetMapping("/verify-password-link")
-	public ResponseEntity<?> VerifyPasswordResetLink(@RequestParam Integer userId, @RequestParam String code){
-		return null;
+	public ResponseEntity<?> VerifyPasswordResetLink(@RequestParam Integer userId, @RequestParam String code) throws Exception{
+		userService.verifyPasswordResetLink(userId, code);
+		return CommonUtil.CreateBuildResponseMessage("Verification succeccful", HttpStatus.OK);
 	}
 	
 	@GetMapping("/reset/password")
