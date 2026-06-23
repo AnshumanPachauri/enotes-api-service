@@ -1,6 +1,7 @@
 package com.ap.enotes_api_service.service;
 
 import com.ap.enotes_api_service.dto.PasswordChangeRequest;
+import com.ap.enotes_api_service.dto.PasswordResetRequestDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -11,5 +12,7 @@ public interface UserService {
 	public void sendEmailPasswordReset(String email, HttpServletRequest httpServletRequest) throws Exception;
 
 	public void verifyPasswordResetLink(Integer userId, String code) throws Exception;
+
+	public void resetPassword(PasswordResetRequestDto passwordResetRequestDto) throws Exception;
 	
 }
