@@ -249,6 +249,32 @@ public class NotesServiceImpl implements NotesService {
 				.build();
 		return notesResponse;
 	}
+	
+	@Override
+	public NotesResponseDto getNotesByUserSearch(Integer pageNo, Integer pageSize, String keyword) {
+		/*
+		 * //Pagination m kitny page dikhany h or ek page m kitny notes dikhany
+		 * h-------(1,5)---2nd page m 5 notes dikhany h. page index0 sy start hota h.
+		 */		
+		
+		Integer userId = CommonUtil.getLoggedInUser().getId();
+		
+		Pageable pagable = PageRequest.of(pageNo, pageSize);
+		Page<Notes> notesList = notesRepository.searchNotes(keyword, userId, pagable);
+		
+		List<NotesDto> notesDtoList = notesList.get().map(note -> modelMapper.map(note, NotesDto.class)).toList();
+		
+		NotesResponseDto notesResponse = NotesResponseDto.builder()
+				.notes(notesDtoList)
+				.pageNumber(notesList.getNumber())
+				.pageSize(notesList.getSize())
+				.totalElements(notesList.getTotalElements())
+				.totalPages(notesList.getTotalPages())
+				.isFirst(notesList.isFirst())
+				.isLast(notesList.isLast())
+				.build();
+		return notesResponse;
+	}
 
 
 	@Override
