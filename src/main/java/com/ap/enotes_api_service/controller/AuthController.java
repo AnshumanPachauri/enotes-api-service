@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ap.enotes_api_service.dto.LoginRequestDto;
 import com.ap.enotes_api_service.dto.LoginResponseDto;
 import com.ap.enotes_api_service.dto.UserRequestDto;
+import com.ap.enotes_api_service.endpoints.AuthControllerEndpoint;
 import com.ap.enotes_api_service.service.AuthService;
 import com.ap.enotes_api_service.utils.CommonUtil;
 
@@ -19,12 +20,13 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuthController {
+public class AuthController implements AuthControllerEndpoint{
 
 	@Autowired
 	private AuthService authService;
 	
-	@PostMapping("/")
+	
+	@Override
 	public ResponseEntity<?> registerUser(@RequestBody UserRequestDto userDto, HttpServletRequest request) throws Exception{
 		
 		String url =  CommonUtil.getRequestUrl(request);
@@ -38,7 +40,8 @@ public class AuthController {
 		
 	}
 	
-	@PostMapping("/login")
+	
+	@Override
 	public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception{
 		
 		LoginResponseDto loginResponseDto = authService.login(loginRequestDto);
