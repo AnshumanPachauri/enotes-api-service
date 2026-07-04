@@ -1,0 +1,154 @@
+spring:
+  application:
+    name: enotes-api-service
+
+  profiles:
+    active: test
+---
+#dev profile
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/enotes_dev
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: anshumanpachauri26@gmail.com
+    password: "bxtt cdqn vblr wkks"
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+file:
+  upload:
+    path: notes/
+
+
+
+---
+#uat profile
+spring:
+  config:
+    activate:
+      on-profile: uat
+  datasource:
+    url: jdbc:mysql://localhost:3306/enotes_uat
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: anshumanpachauri26@gmail.com
+    password: "bxtt cdqn vblr wkks"
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+file:
+  upload:
+    path: notes/
+
+
+---
+#test profile
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:mysql://localhost:3306/enotes_test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: anshumanpachauri26@gmail.com
+    password: "bxtt cdqn vblr wkks"
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+file:
+  upload:
+    path: notes/
+
+
+
+---
+#prod profile
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://localhost:3306/enotes_prod
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: anshumanpachauri26@gmail.com
+    password: "bxtt cdqn vblr wkks"
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+file:
+  upload:
+    path: notes/
