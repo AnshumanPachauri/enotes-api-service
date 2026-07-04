@@ -60,7 +60,7 @@ public class SecurityConfig {
 		//Disabled CSRF
 		httpSecurity.csrf(csrf -> csrf.disable())
 		//Allowed home and auth endpoints and authorized rest of them.
-		.authorizeHttpRequests(req -> req.requestMatchers("/api/v1/auth/**", "/api/v1/home/**").permitAll()
+		.authorizeHttpRequests(req -> req.requestMatchers("/api/v1/auth/**", "/api/v1/home/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 		.anyRequest().authenticated())
 		.httpBasic(Customizer.withDefaults())
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

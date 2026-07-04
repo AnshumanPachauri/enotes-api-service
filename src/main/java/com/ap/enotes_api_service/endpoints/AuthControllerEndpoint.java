@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface AuthControllerEndpoint {
 
 	
-	@PostMapping("/")
+	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody UserRequestDto userDto, HttpServletRequest request) throws Exception;
 	
 	@PostMapping("/login")
