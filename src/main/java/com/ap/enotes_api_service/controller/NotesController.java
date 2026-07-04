@@ -47,8 +47,7 @@ public class NotesController implements NotesControllerEndpoint{
 	 * save it locally in a folder and while deploying we will save in s3 bucket.
 	 */
 	
-//	@PostMapping("/")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> saveNotes(@RequestParam String notes, @RequestParam(required = false) MultipartFile multipartFile) throws Exception{
 		
@@ -67,8 +66,7 @@ public class NotesController implements NotesControllerEndpoint{
 		return CommonUtil.CreateErrorResponseMessage("Note Not Saved---Nahi hua", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-//	@GetMapping("/")
-//	@PreAuthorize("hasRole('ADMIN')")
+
 	@Override
 	public ResponseEntity<?> getAllNotes(){
 		
@@ -81,8 +79,7 @@ public class NotesController implements NotesControllerEndpoint{
 		return CommonUtil.CreateBuildResponse(allNotes, HttpStatus.OK);
 	}
 	
-//	@GetMapping("/download/{id}")
-//	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+
 	@Override
 	public ResponseEntity<?> downloadFile(@PathVariable Integer id) throws Exception{
 		
@@ -97,8 +94,7 @@ public class NotesController implements NotesControllerEndpoint{
 		return ResponseEntity.ok().headers(headers).body(fileData);
 	}
 	
-//	@GetMapping("/user-notes/{userId}")
-//	@PreAuthorize("hasRole('USER')"
+
 	@Override
 	public ResponseEntity<?> getAllNotesByUser(@RequestParam(name="pageNo",required = true, defaultValue = "0")  Integer pageNo,
 											@RequestParam(name="pageSize",required = true, defaultValue = "3")  Integer pageSize){
@@ -112,8 +108,7 @@ public class NotesController implements NotesControllerEndpoint{
 	}
 	
 	
-//	@GetMapping("/search")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> searchNotesByUser(@RequestParam(name="keyword", defaultValue = "") String keyword,
 											@RequestParam(name="pageNo",required = true, defaultValue = "0")  Integer pageNo,
@@ -128,8 +123,7 @@ public class NotesController implements NotesControllerEndpoint{
 	}
 	
 	
-//	@GetMapping("/delete/{id}")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> deleteNotes(@PathVariable Integer id) throws Exception{
 		
@@ -139,8 +133,7 @@ public class NotesController implements NotesControllerEndpoint{
 		
 	}
 	
-//	@GetMapping("/restore/{id}")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> restoreSoftDeletedNotes(@PathVariable Integer id) throws Exception{
 		
@@ -149,8 +142,7 @@ public class NotesController implements NotesControllerEndpoint{
 		
 	}
 	
-//	@GetMapping("/recycle-bin")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> getUserRecycleBinNotes() throws Exception{
 		
@@ -164,8 +156,7 @@ public class NotesController implements NotesControllerEndpoint{
 		
 	}
 	
-//	@DeleteMapping("/delete/{id}")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> hardDeleteNotes(@PathVariable Integer id) throws Exception {
 
@@ -174,8 +165,7 @@ public class NotesController implements NotesControllerEndpoint{
 
 	}
 	
-//	@DeleteMapping("/delete")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> emptyRecycleBin() throws Exception {
 		
@@ -184,8 +174,7 @@ public class NotesController implements NotesControllerEndpoint{
 
 	}
 	
-//	@GetMapping("/fav/{noteId}")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> favouriteNote(@PathVariable Integer noteId) throws Exception {
 
@@ -194,8 +183,7 @@ public class NotesController implements NotesControllerEndpoint{
 
 	}
 
-//	@DeleteMapping("/un-fav/{favouriteNoteId}")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> unFavouriteNote(@PathVariable Integer favouriteNoteId) throws Exception {
 
@@ -204,8 +192,7 @@ public class NotesController implements NotesControllerEndpoint{
 
 	}
 	
-//	@GetMapping("/fav-notes")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> getserFavouriteNotes() throws Exception {
 		
@@ -219,8 +206,7 @@ public class NotesController implements NotesControllerEndpoint{
 
 	}
 	
-//	@GetMapping("/copy/{noteId}")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> copyNote(@PathVariable Integer noteId) throws Exception {
 

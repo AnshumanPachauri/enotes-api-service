@@ -27,8 +27,7 @@ public class TodoController implements TodoControllerEndpoint{
 	@Autowired
 	private TodoService todoService;
 	
-//	@PostMapping("/")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> saveTodo(@RequestBody TodoDto todoDto) throws Exception{
 		
@@ -39,8 +38,7 @@ public class TodoController implements TodoControllerEndpoint{
 		return CommonUtil.CreateErrorResponseMessage("Todo Not Saved", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-//	@GetMapping("/{id}")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> getTodoById(@PathVariable Integer id) throws Exception{
 		
@@ -48,8 +46,7 @@ public class TodoController implements TodoControllerEndpoint{
 		return CommonUtil.CreateBuildResponse(todoById, HttpStatus.OK);
 	}
 	
-//	@GetMapping("/user-todo")
-//	@PreAuthorize("hasRole('USER')")
+
 	@Override
 	public ResponseEntity<?> getTodoByUser() throws Exception{
 		

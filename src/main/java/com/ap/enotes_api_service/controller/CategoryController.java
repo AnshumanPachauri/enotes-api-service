@@ -35,8 +35,7 @@ public class CategoryController implements CategoryControllerEndpoint {
 	@Autowired
 	private CategoryService categoryService;
 	
-//	@PostMapping("/save")
-//	@PreAuthorize("hasRole('ADMIN')")
+
 	@Override
 	public ResponseEntity<?> saveCategory(@Valid @RequestBody CategoryDto categoryDto) {
 		
@@ -52,8 +51,7 @@ public class CategoryController implements CategoryControllerEndpoint {
 		}
 	}
 	
-//	@GetMapping("/")
-//	@PreAuthorize("hasRole('ADMIN')")
+
 	@Override
 	public ResponseEntity<?> getAllCategory(){
 		List<CategoryDto> allCategories = categoryService.getAllCategories();
@@ -68,8 +66,7 @@ public class CategoryController implements CategoryControllerEndpoint {
 		
 	}
 	
-//	@GetMapping("/active")
-//	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+
 	@Override
 	public ResponseEntity<?> getActiveCategory(){
 		
@@ -86,8 +83,7 @@ public class CategoryController implements CategoryControllerEndpoint {
 		
 	}
 	
-//	@GetMapping("/{id}")
-//	@PreAuthorize("hasRole('ADMIN')")
+
 	@Override
 	public ResponseEntity<?> getCategoryDetailsById(@PathVariable Integer id) throws Exception{
 		
@@ -102,8 +98,7 @@ public class CategoryController implements CategoryControllerEndpoint {
 		return CommonUtil.CreateBuildResponse(categoryDto, HttpStatus.OK);
 	}
 	
-//	@DeleteMapping("/{id}")
-//	@PreAuthorize("hasRole('ADMIN')")
+
 	@Override
 	public ResponseEntity<?> deleteCategoryDetailsById(@PathVariable Integer id){
 		

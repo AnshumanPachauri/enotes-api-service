@@ -26,7 +26,7 @@ public class UserController implements UserControllerEndpoint{
 	@Autowired
 	private UserService userService;
 	
-//	@GetMapping("/profile")
+
 	@Override
 	public ResponseEntity<?> getProfile(){
 		
@@ -35,7 +35,7 @@ public class UserController implements UserControllerEndpoint{
 		return CommonUtil.CreateBuildResponse(mapedLoggedInUserResponse, HttpStatus.OK);
 	}
 	
-//	@PostMapping("/change-password")
+
 	@Override
 	public ResponseEntity<?> chabgePassword(@RequestBody PasswordChangeRequest passwordChangeRequest){
 		

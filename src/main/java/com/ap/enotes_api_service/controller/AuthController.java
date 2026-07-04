@@ -25,7 +25,7 @@ public class AuthController implements AuthControllerEndpoint{
 	@Autowired
 	private AuthService authService;
 	
-//	@PostMapping("/")
+	
 	@Override
 	public ResponseEntity<?> registerUser(@RequestBody UserRequestDto userDto, HttpServletRequest request) throws Exception{
 		
@@ -40,7 +40,7 @@ public class AuthController implements AuthControllerEndpoint{
 		
 	}
 	
-//	@PostMapping("/login")
+	
 	@Override
 	public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception{
 		

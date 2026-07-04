@@ -29,7 +29,7 @@ public class HomeController implements HomeControllerEndpoint {
 	@Autowired
 	private UserService userService;
 	
-//	@GetMapping("/verify")
+
 	@Override
 	public ResponseEntity<?> verifyAccount(@RequestParam int id, @RequestParam String VC) throws Exception{
 		log.info("--- [enotes-api-service] [Home Controller] VerifyAccount() : Execution Started.");
@@ -41,7 +41,7 @@ public class HomeController implements HomeControllerEndpoint {
 		return CommonUtil.CreateErrorResponseMessage("Invalid URL.", HttpStatus.BAD_REQUEST);
 	}
 	
-//	@GetMapping("/send-email-reset")
+
 	@Override
 	public ResponseEntity<?> sendEmailForpasswordReset(@RequestParam String email, HttpServletRequest servletRequest) throws Exception{
 		log.info("--- [enotes-api-service] [Home Controller] sendEmailForpasswordReset() : Execution Started.");
@@ -49,14 +49,14 @@ public class HomeController implements HomeControllerEndpoint {
 		return CommonUtil.CreateBuildResponseMessage("Email sent successfully, verify the link to reset password.", HttpStatus.OK);
 	}
 	
-//	@GetMapping("/verify-password-link")
+
 	@Override
 	public ResponseEntity<?> VerifyPasswordResetLink(@RequestParam Integer id, @RequestParam String code) throws Exception{
 		userService.verifyPasswordResetLink(id, code);
 		return CommonUtil.CreateBuildResponseMessage("Verification successful", HttpStatus.OK);
 	}
 	
-//	@PostMapping("/reset-password")
+
 	@Override
 	public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequestDto passwordResetRequestDto) throws Exception{
 		userService.resetPassword(passwordResetRequestDto);
