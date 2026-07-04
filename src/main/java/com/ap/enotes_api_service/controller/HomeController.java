@@ -16,7 +16,9 @@ import com.ap.enotes_api_service.service.UserService;
 import com.ap.enotes_api_service.utils.CommonUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/home")
 public class HomeController {
@@ -28,9 +30,10 @@ public class HomeController {
 	
 	@GetMapping("/verify")
 	public ResponseEntity<?> verifyAccount(@RequestParam int id, @RequestParam String VC) throws Exception{
-		
+		log.info("--- [enotes-api-service] [Home Controller] VerifyAccount() : Execution Started.");
 		Boolean verifyAccount = homeService.verifyAccount(id, VC);
 		if(verifyAccount) {
+			log.info("--- [enotes-api-service] [Home Controller] VerifyAccount() : Execution Completed.");
 			return CommonUtil.CreateBuildResponseMessage("Account Verified", HttpStatus.OK);
 		}
 		return CommonUtil.CreateErrorResponseMessage("Invalid URL.", HttpStatus.BAD_REQUEST);
@@ -38,6 +41,7 @@ public class HomeController {
 	
 	@GetMapping("/send-email-reset")
 	public ResponseEntity<?> sendEmailForpasswordReset(@RequestParam String email, HttpServletRequest servletRequest) throws Exception{
+		log.info("--- [enotes-api-service] [Home Controller] sendEmailForpasswordReset() : Execution Started.");
 		userService.sendEmailPasswordReset(email, servletRequest);
 		return CommonUtil.CreateBuildResponseMessage("Email sent successfully, verify the link to reset password.", HttpStatus.OK);
 	}

@@ -20,7 +20,8 @@ import com.ap.enotes_api_service.service.UserService;
 import com.ap.enotes_api_service.utils.CommonUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void sendEmailPasswordReset(String email, HttpServletRequest servletRequest) throws Exception {
-		
+		log.info("--- [enotes-api-service] [EmailService] sendEmailForpasswordReset() : Service Started.");
 		User userByEmail = userRepository.findByEmail(email);
 		
 		if(ObjectUtils.isEmpty(userByEmail)) {
