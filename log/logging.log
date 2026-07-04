@@ -305,3 +305,11 @@
 2026-04-33 20 INFO  [restartedMain] o.s.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
 2026-04-33 20 INFO  [restartedMain] c.a.e.EnotesApiServiceApplication - Started EnotesApiServiceApplication in 1.035 seconds (process running for 393.091)
 2026-04-33 20 INFO  [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2026-04-34 20 INFO  [RMI TCP Connection(12)-127.0.0.1] o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2026-04-34 20 INFO  [RMI TCP Connection(12)-127.0.0.1] o.s.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-34 20 INFO  [tomcat-shutdown] o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2026-04-34 20 INFO  [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-34 20 INFO  [RMI TCP Connection(12)-127.0.0.1] o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2026-04-34 20 INFO  [RMI TCP Connection(12)-127.0.0.1] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-34 20 INFO  [RMI TCP Connection(12)-127.0.0.1] com.zaxxer.hikari.HikariDataSource - HikariPool-7 - Shutdown initiated...
+2026-04-34 20 INFO  [RMI TCP Connection(12)-127.0.0.1] com.zaxxer.hikari.HikariDataSource - HikariPool-7 - Shutdown completed.
