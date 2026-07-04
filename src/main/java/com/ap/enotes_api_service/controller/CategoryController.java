@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ap.enotes_api_service.dto.CategoryDto;
 import com.ap.enotes_api_service.dto.CategoryResponseDto;
+import com.ap.enotes_api_service.endpoints.CategoryControllerEndpoint;
 import com.ap.enotes_api_service.entity.Category;
 import com.ap.enotes_api_service.exception.ResourceNotFoundException;
 import com.ap.enotes_api_service.service.CategoryService;
@@ -29,13 +30,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/category")
-public class CategoryController {
+public class CategoryController implements CategoryControllerEndpoint {
 
 	@Autowired
 	private CategoryService categoryService;
 	
-	@PostMapping("/save")
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PostMapping("/save")
+//	@PreAuthorize("hasRole('ADMIN')")
+	@Override
 	public ResponseEntity<?> saveCategory(@Valid @RequestBody CategoryDto categoryDto) {
 		
 		Boolean saveCatedory = categoryService.saveCategory(categoryDto);
@@ -50,8 +52,9 @@ public class CategoryController {
 		}
 	}
 	
-	@GetMapping("/")
-	@PreAuthorize("hasRole('ADMIN')")
+//	@GetMapping("/")
+//	@PreAuthorize("hasRole('ADMIN')")
+	@Override
 	public ResponseEntity<?> getAllCategory(){
 		List<CategoryDto> allCategories = categoryService.getAllCategories();
 		
@@ -65,8 +68,9 @@ public class CategoryController {
 		
 	}
 	
-	@GetMapping("/active")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//	@GetMapping("/active")
+//	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	@Override
 	public ResponseEntity<?> getActiveCategory(){
 		
 		List<CategoryResponseDto> activeCategories = categoryService.getActiveCategories();
@@ -82,8 +86,9 @@ public class CategoryController {
 		
 	}
 	
-	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+//	@GetMapping("/{id}")
+//	@PreAuthorize("hasRole('ADMIN')")
+	@Override
 	public ResponseEntity<?> getCategoryDetailsById(@PathVariable Integer id) throws Exception{
 		
 		CategoryDto categoryDto;
@@ -97,8 +102,9 @@ public class CategoryController {
 		return CommonUtil.CreateBuildResponse(categoryDto, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+//	@DeleteMapping("/{id}")
+//	@PreAuthorize("hasRole('ADMIN')")
+	@Override
 	public ResponseEntity<?> deleteCategoryDetailsById(@PathVariable Integer id){
 		
 		Boolean deleted = categoryService.deleteCategoryById(id);
