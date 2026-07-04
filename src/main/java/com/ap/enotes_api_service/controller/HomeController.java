@@ -31,7 +31,7 @@ public class HomeController implements HomeControllerEndpoint {
 	
 
 	@Override
-	public ResponseEntity<?> verifyAccount(@RequestParam int id, @RequestParam String VC) throws Exception{
+	public ResponseEntity<?> verifyAccount(int id, String VC) throws Exception{
 		log.info("--- [enotes-api-service] [Home Controller] VerifyAccount() : Execution Started.");
 		Boolean verifyAccount = homeService.verifyAccount(id, VC);
 		if(verifyAccount) {
@@ -43,7 +43,7 @@ public class HomeController implements HomeControllerEndpoint {
 	
 
 	@Override
-	public ResponseEntity<?> sendEmailForpasswordReset(@RequestParam String email, HttpServletRequest servletRequest) throws Exception{
+	public ResponseEntity<?> sendEmailForpasswordReset(String email, HttpServletRequest servletRequest) throws Exception{
 		log.info("--- [enotes-api-service] [Home Controller] sendEmailForpasswordReset() : Execution Started.");
 		userService.sendEmailPasswordReset(email, servletRequest);
 		return CommonUtil.CreateBuildResponseMessage("Email sent successfully, verify the link to reset password.", HttpStatus.OK);
@@ -51,14 +51,14 @@ public class HomeController implements HomeControllerEndpoint {
 	
 
 	@Override
-	public ResponseEntity<?> VerifyPasswordResetLink(@RequestParam Integer id, @RequestParam String code) throws Exception{
+	public ResponseEntity<?> VerifyPasswordResetLink(Integer id, String code) throws Exception{
 		userService.verifyPasswordResetLink(id, code);
 		return CommonUtil.CreateBuildResponseMessage("Verification successful", HttpStatus.OK);
 	}
 	
 
 	@Override
-	public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequestDto passwordResetRequestDto) throws Exception{
+	public ResponseEntity<?> resetPassword(PasswordResetRequestDto passwordResetRequestDto) throws Exception{
 		userService.resetPassword(passwordResetRequestDto);
 		return CommonUtil.CreateBuildResponseMessage("Password reset successfully", HttpStatus.OK);
 	}

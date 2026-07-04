@@ -37,7 +37,7 @@ public class UserController implements UserControllerEndpoint{
 	
 
 	@Override
-	public ResponseEntity<?> chabgePassword(@RequestBody PasswordChangeRequest passwordChangeRequest){
+	public ResponseEntity<?> chabgePassword(PasswordChangeRequest passwordChangeRequest){
 		
 		userService.ChangePassword(passwordChangeRequest);
 		return CommonUtil.CreateBuildResponseMessage("Password changed successfully!!", HttpStatus.OK);
