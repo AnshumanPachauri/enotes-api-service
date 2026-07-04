@@ -49,7 +49,7 @@ public class NotesController implements NotesControllerEndpoint{
 	
 
 	@Override
-	public ResponseEntity<?> saveNotes(@RequestParam String notes, @RequestParam(required = false) MultipartFile multipartFile) throws Exception{
+	public ResponseEntity<?> saveNotes(String notes, MultipartFile multipartFile) throws Exception{
 		
 		/*
 		 * As our saveNotes method takes notesDto as input, we will have to change its
@@ -81,7 +81,7 @@ public class NotesController implements NotesControllerEndpoint{
 	
 
 	@Override
-	public ResponseEntity<?> downloadFile(@PathVariable Integer id) throws Exception{
+	public ResponseEntity<?> downloadFile(Integer id) throws Exception{
 		
 		FileDetails fileDetails = notesService.getFileDetails(id);
 		
@@ -96,8 +96,7 @@ public class NotesController implements NotesControllerEndpoint{
 	
 
 	@Override
-	public ResponseEntity<?> getAllNotesByUser(@RequestParam(name="pageNo",required = true, defaultValue = "0")  Integer pageNo,
-											@RequestParam(name="pageSize",required = true, defaultValue = "3")  Integer pageSize){
+	public ResponseEntity<?> getAllNotesByUser(Integer pageNo, Integer pageSize){
 		
 		NotesResponseDto notes = notesService.getAllNotesByUser(pageNo, pageSize);
 		
@@ -110,9 +109,7 @@ public class NotesController implements NotesControllerEndpoint{
 	
 
 	@Override
-	public ResponseEntity<?> searchNotesByUser(@RequestParam(name="keyword", defaultValue = "") String keyword,
-											@RequestParam(name="pageNo",required = true, defaultValue = "0")  Integer pageNo,
-											@RequestParam(name="pageSize",required = true, defaultValue = "3")  Integer pageSize){
+	public ResponseEntity<?> searchNotesByUser(String keyword, Integer pageNo, Integer pageSize){
 		
 		NotesResponseDto notes = notesService.getNotesByUserSearch(pageNo, pageSize, keyword);
 		
@@ -125,7 +122,7 @@ public class NotesController implements NotesControllerEndpoint{
 	
 
 	@Override
-	public ResponseEntity<?> deleteNotes(@PathVariable Integer id) throws Exception{
+	public ResponseEntity<?> deleteNotes(Integer id) throws Exception{
 		
 		notesService.softDeleteNotes(id);
 		
@@ -135,7 +132,7 @@ public class NotesController implements NotesControllerEndpoint{
 	
 
 	@Override
-	public ResponseEntity<?> restoreSoftDeletedNotes(@PathVariable Integer id) throws Exception{
+	public ResponseEntity<?> restoreSoftDeletedNotes(Integer id) throws Exception{
 		
 		notesService.restoreNotes(id);
 		return CommonUtil.CreateBuildResponseMessage("Note Restored with Id = " + id, HttpStatus.OK);
@@ -158,7 +155,7 @@ public class NotesController implements NotesControllerEndpoint{
 	
 
 	@Override
-	public ResponseEntity<?> hardDeleteNotes(@PathVariable Integer id) throws Exception {
+	public ResponseEntity<?> hardDeleteNotes(Integer id) throws Exception {
 
 		notesService.hardDeleteNotes(id);
 		return CommonUtil.CreateBuildResponseMessage("Note Deleted with Id = " + id, HttpStatus.OK);	
@@ -176,7 +173,7 @@ public class NotesController implements NotesControllerEndpoint{
 	
 
 	@Override
-	public ResponseEntity<?> favouriteNote(@PathVariable Integer noteId) throws Exception {
+	public ResponseEntity<?> favouriteNote(Integer noteId) throws Exception {
 
 		notesService.favouriteNotes(noteId);
 		return CommonUtil.CreateBuildResponseMessage("Note id = " + noteId + " moved to favourite notes", HttpStatus.OK);	
@@ -185,7 +182,7 @@ public class NotesController implements NotesControllerEndpoint{
 
 
 	@Override
-	public ResponseEntity<?> unFavouriteNote(@PathVariable Integer favouriteNoteId) throws Exception {
+	public ResponseEntity<?> unFavouriteNote(Integer favouriteNoteId) throws Exception {
 
 		notesService.unFavouriteNotes(favouriteNoteId);
 		return CommonUtil.CreateBuildResponseMessage("Note id = " + favouriteNoteId + " removed from favourite notes", HttpStatus.OK);	
@@ -208,7 +205,7 @@ public class NotesController implements NotesControllerEndpoint{
 	
 
 	@Override
-	public ResponseEntity<?> copyNote(@PathVariable Integer noteId) throws Exception {
+	public ResponseEntity<?> copyNote(Integer noteId) throws Exception {
 
 		Boolean copyNotes = notesService.copyNotes(noteId);
 		if(copyNotes) {

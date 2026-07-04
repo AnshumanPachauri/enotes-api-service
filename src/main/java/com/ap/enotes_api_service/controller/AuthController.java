@@ -27,7 +27,7 @@ public class AuthController implements AuthControllerEndpoint{
 	
 	
 	@Override
-	public ResponseEntity<?> registerUser(@RequestBody UserRequestDto userDto, HttpServletRequest request) throws Exception{
+	public ResponseEntity<?> registerUser(UserRequestDto userDto, HttpServletRequest request) throws Exception{
 		
 		String url =  CommonUtil.getRequestUrl(request);
 		
@@ -42,7 +42,7 @@ public class AuthController implements AuthControllerEndpoint{
 	
 	
 	@Override
-	public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception{
+	public ResponseEntity<?> login(LoginRequestDto loginRequestDto) throws Exception{
 		
 		LoginResponseDto loginResponseDto = authService.login(loginRequestDto);
 		

@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ap.enotes_api_service.dto.CategoryDto;
+import com.ap.enotes_api_service.utils.Constants;
+import static com.ap.enotes_api_service.utils.Constants.ROLE_ADMIN;
+import static com.ap.enotes_api_service.utils.Constants.ROLE_ADMIN_USER;
 
 import jakarta.validation.Valid;
 
@@ -16,23 +19,23 @@ public interface CategoryControllerEndpoint {
 
 	
 	@PostMapping("/save")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize(ROLE_ADMIN)
 	public ResponseEntity<?> saveCategory(@Valid @RequestBody CategoryDto categoryDto);
 	
 	@GetMapping("/")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize(ROLE_ADMIN)
 	public ResponseEntity<?> getAllCategory();
 	
 	@GetMapping("/active")
-	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	@PreAuthorize(ROLE_ADMIN_USER)
 	public ResponseEntity<?> getActiveCategory();
 	
 	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize(ROLE_ADMIN)
 	public ResponseEntity<?> getCategoryDetailsById(@PathVariable Integer id) throws Exception;
 	
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize(ROLE_ADMIN)
 	public ResponseEntity<?> deleteCategoryDetailsById(@PathVariable Integer id);
 	
 }
