@@ -18,19 +18,19 @@ import static com.ap.enotes_api_service.utils.Constants.ROLE_USER;
 public interface TodoControllerEndpoint {
 
 	
-	@Operation(summary = "Save Todo's", tags= {}, description = "User can save their todo tasks")
+	@Operation(summary = "Save Todo's", tags= {"User", "Todo"}, description = "User can save their todo tasks")
 	@PostMapping("/")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> saveTodo(@RequestBody TodoDto todoDto) throws Exception;
 	
 	
-	@Operation(summary = "Get Todo's By Todo-Id", tags= {}, description = "User can get their todo tasks by todo-id")
+	@Operation(summary = "Get Todo's By Todo-Id", tags= {"User", "Todo"}, description = "User can get their todo tasks by todo-id")
 	@GetMapping("/{id}")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> getTodoById(@PathVariable Integer id) throws Exception;
 	
 	
-	@Operation(summary = "Get Todo's By User", tags= {}, description = "User can get their todo tasks")
+	@Operation(summary = "Get Todo's By User", tags= {"User", "Todo"}, description = "User can get their todo tasks")
 	@GetMapping("/user-todo")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> getTodoByUser() throws Exception;

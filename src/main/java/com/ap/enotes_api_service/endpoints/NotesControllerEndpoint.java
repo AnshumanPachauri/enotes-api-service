@@ -22,7 +22,7 @@ import static com.ap.enotes_api_service.utils.Constants.DEFAULT_PAGE_SIZE;
 public interface NotesControllerEndpoint {
 
 	
-	@Operation(summary = "Save Notes", tags= {}, description = "User can save notes")
+	@Operation(summary = "Save Notes", tags= {"User", "Notes"}, description = "User can save notes")
 	@PostMapping("/")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> saveNotes(@RequestParam String notes, @RequestParam(required = false) MultipartFile multipartFile) throws Exception;
@@ -34,20 +34,20 @@ public interface NotesControllerEndpoint {
 	public ResponseEntity<?> getAllNotes();
 	
 	
-	@Operation(summary = "Download Notes File", tags= {}, description = "User and Admin can download the file uploaded in notes")
+	@Operation(summary = "Download Notes File", tags= {"User", "Notes"}, description = "User and Admin can download the file uploaded in notes")
 	@GetMapping("/download/{id}")
 	@PreAuthorize(ROLE_ADMIN_USER)
 	public ResponseEntity<?> downloadFile(@PathVariable Integer id) throws Exception;
 	
 	
-	@Operation(summary = "Get User Notes", tags= {}, description = "User can get all their notes")
+	@Operation(summary = "Get User Notes", tags= {"User", "Notes"}, description = "User can get all their notes")
 	@GetMapping("/user-notes/{userId}")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> getAllNotesByUser(@RequestParam(name="pageNo",required = true, defaultValue = DEFAULT_PAGE_NO)  Integer pageNo,
 											@RequestParam(name="pageSize",required = true, defaultValue = DEFAULT_PAGE_SIZE)  Integer pageSize);
 	
 	
-	@Operation(summary = "Search User Notes", tags= {}, description = "User Can search all their notes based on keywords")
+	@Operation(summary = "Search User Notes", tags= {"User", "Notes"}, description = "User Can search all their notes based on keywords")
 	@GetMapping("/search")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> searchNotesByUser(@RequestParam(name="keyword", defaultValue = "") String keyword,
@@ -55,54 +55,54 @@ public interface NotesControllerEndpoint {
 			@RequestParam(name="pageSize",required = true, defaultValue = DEFAULT_PAGE_SIZE)  Integer pageSize);
 	
 	
-	@Operation(summary = "Soft Delete User Notes", tags= {}, description = "User can soft delete their notes")
+	@Operation(summary = "Soft Delete User Notes", tags= {"User", "Notes"}, description = "User can soft delete their notes")
 	@GetMapping("/delete/{id}")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> deleteNotes(@PathVariable Integer id) throws Exception;
 	
 	
-	@Operation(summary = "Restore Soft Deleted User Notes", tags= {}, description = "User can restore their soft deleted notes")
+	@Operation(summary = "Restore Soft Deleted User Notes", tags= {"User", "Notes"}, description = "User can restore their soft deleted notes")
 	@GetMapping("/restore/{id}")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> restoreSoftDeletedNotes(@PathVariable Integer id) throws Exception;
 	
 	
-	@Operation(summary = "Get Soft Deleted User Notes", tags= {}, description = "User can get their soft deleted notes")
+	@Operation(summary = "Get Soft Deleted User Notes", tags= {"User", "Notes"}, description = "User can get their soft deleted notes")
 	@GetMapping("/recycle-bin")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> getUserRecycleBinNotes() throws Exception;
 	
 	
-	@Operation(summary = "Permanently Delete User Notes", tags= {}, description = "User can permanently delete their notes")
+	@Operation(summary = "Permanently Delete User Notes", tags= {"User", "Notes"}, description = "User can permanently delete their notes")
 	@DeleteMapping("/delete/{id}")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> hardDeleteNotes(@PathVariable Integer id) throws Exception;
 	
 	
-	@Operation(summary = "Empty User Recycle Bin", tags= {}, description = "User can Empty their notes recycle bin")
+	@Operation(summary = "Empty User Recycle Bin", tags= {"User", "Notes"}, description = "User can Empty their notes recycle bin")
 	@DeleteMapping("/delete")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> emptyRecycleBin() throws Exception;
 	
 	
-	@Operation(summary = "Make User Notes Favourite", tags= {}, description = "User can mark their notes as favourite")
+	@Operation(summary = "Make User Notes Favourite", tags= {"User", "Notes"}, description = "User can mark their notes as favourite")
 	@GetMapping("/fav/{noteId}")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> favouriteNote(@PathVariable Integer noteId) throws Exception;
 	
 	
-	@Operation(summary = "Make User Notes UnFavourite", tags= {}, description = "User can mark their notes as unfavourite")
+	@Operation(summary = "Make User Notes UnFavourite", tags= {"User", "Notes"}, description = "User can mark their notes as unfavourite")
 	@DeleteMapping("/un-fav/{favouriteNoteId}")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> unFavouriteNote(@PathVariable Integer favouriteNoteId) throws Exception;
 	
 	
-	@Operation(summary = "Get User Favourite Notes", tags= {}, description = "User can mark their favourite notes")
+	@Operation(summary = "Get User Favourite Notes", tags= {"User", "Notes"}, description = "User can mark their favourite notes")
 	@GetMapping("/fav-notes")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> getserFavouriteNotes() throws Exception;
 	
-	@Operation(summary = "Copy User Notes", tags= {}, description = "User can make copy of their notes")
+	@Operation(summary = "Copy User Notes", tags= {"User", "Notes"}, description = "User can make copy of their notes")
 	@GetMapping("/copy/{noteId}")
 	@PreAuthorize(ROLE_USER)
 	public ResponseEntity<?> copyNote(@PathVariable Integer noteId) throws Exception;
