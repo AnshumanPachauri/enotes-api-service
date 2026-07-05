@@ -9,7 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ap.enotes_api_service.dto.NotesDto;
+
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import static com.ap.enotes_api_service.utils.Constants.ROLE_ADMIN;
@@ -23,9 +28,9 @@ public interface NotesControllerEndpoint {
 
 	
 	@Operation(summary = "Save Notes", tags= {"User", "Notes"}, description = "User can save notes")
-	@PostMapping("/")
+	@PostMapping(value = "/", consumes = "multipart/form-data")
 	@PreAuthorize(ROLE_USER)
-	public ResponseEntity<?> saveNotes(@RequestParam String notes, @RequestParam(required = false) MultipartFile multipartFile) throws Exception;
+	public ResponseEntity<?> saveNotes(@RequestParam @Parameter(description = "Json String Notes", required = true, content = @Content(schema = @Schema(implementation = NotesDto.class))) String notes, @RequestParam(required = false) MultipartFile multipartFile) throws Exception;
 	
 	
 	@Operation(summary = "Get All Notes", tags= {}, description = "Admin can get all notes of all users")
