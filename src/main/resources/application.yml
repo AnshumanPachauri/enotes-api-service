@@ -44,6 +44,14 @@ springdoc:
   api-docs:
     path: /enotes-api-doc
 
+
+management: 
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: beans, loggers
+
 file:
   upload:
     path: notes/
