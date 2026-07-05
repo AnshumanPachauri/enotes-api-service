@@ -39,6 +39,10 @@ spring:
 springdoc:
   swagger-ui:
     operations-sorter: method
+    tags-sorter: alpha
+    path: /enotes-doc
+  api-docs:
+    path: /enotes-api-doc
 
 file:
   upload:

@@ -11,14 +11,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 
-@Tag(name="User Authentication", description = "Contains all the user authentication api's")
+@Tag(name="Authentication", description = "Contains all the user authentication api's")
 public interface AuthControllerEndpoint {
 
-	@Operation(summary = "User Registeration Endpoint", tags= {"User Authentication", "Home"})
+	@Operation(summary = "User Registeration Endpoint", tags= {"Authentication", "Home"})
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody UserRequestDto userDto, HttpServletRequest request) throws Exception;
 	
-	@Operation(summary = "User Login Endpoint", tags= {"User Authentication", "Home"})
+	@Operation(summary = "User Login Endpoint", tags= {"Authentication", "Home"})
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception;
 	
