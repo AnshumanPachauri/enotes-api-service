@@ -36,6 +36,10 @@ spring:
             enable: true
             required: true
 
+springdoc:
+  swagger-ui:
+    operations-sorter: method
+
 file:
   upload:
     path: notes/
