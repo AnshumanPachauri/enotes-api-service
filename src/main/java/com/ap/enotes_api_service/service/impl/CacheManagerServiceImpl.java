@@ -20,17 +20,39 @@ public class CacheManagerServiceImpl implements CacheManagerService{
 	private CacheManager cacheManager;
 	
 	@Override
-	public void getCache() {
+	public Collection<String> getCache() {
 		
 		Collection<String> cacheNames = cacheManager.getCacheNames();
 		
 		for(String cacheName:cacheNames) {
 			@Nullable
 			Cache cache = cacheManager.getCache(cacheName);
-			log.info("cache Name->"+cacheName);
+			log.info("cache Name->"+cache);
 //			System.out.println();
 		}
+		return cacheNames;
+	}
+
+	@Override
+	public Cache getCacheName(String cacheName) {
 		
+		Cache cache = cacheManager.getCache(cacheName);
+		log.info("Cache Name = {}", cache);
+		return cache;
+		
+	}
+
+	@Override
+	public void removeAllCache() {
+		
+		Collection<String> cacheNames = cacheManager.getCacheNames();
+		
+		for(String cacheName:cacheNames) {
+			@Nullable
+			Cache cache = cacheManager.getCache(cacheName);
+			log.info("cache Name->"+cache);
+			cache.clear();
+		}	
 	}
 	
 }
