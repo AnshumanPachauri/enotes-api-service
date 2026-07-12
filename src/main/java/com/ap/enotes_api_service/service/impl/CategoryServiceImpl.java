@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import com.ap.enotes_api_service.dto.CategoryDto;
@@ -91,6 +92,7 @@ public class CategoryServiceImpl implements CategoryService {
 	
 
 	@Override
+	@Cacheable("allCategory")
 	public List<CategoryDto> getAllCategories() {
 		// TODO Auto-generated method stub
 		List<Category> categories =  categoryRepository.findAllByIsDeletedFalse();
@@ -110,6 +112,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@Cacheable("activeCategory")
 	public List<CategoryResponseDto> getActiveCategories() {
 		// TODO Auto-generated method stub
 		
