@@ -1,6 +1,7 @@
 package com.ap.enotes_api_service.service.impl;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,17 @@ public class CacheManagerServiceImpl implements CacheManagerService{
 			log.info("cache Name->"+cache);
 			cache.clear();
 		}	
+	}
+
+	@Override
+	public void removeCacheByName(List<String> cacheNames) {
+		
+		for(String cacheName : cacheNames) {
+			Cache cache = cacheManager.getCache(cacheName);
+			log.info("Cache Name={}",cache);
+			cache.clear();
+		}
+		
 	}
 	
 }

@@ -1,11 +1,13 @@
 package com.ap.enotes_api_service.service.impl;
 
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -15,6 +17,7 @@ import com.ap.enotes_api_service.entity.Category;
 import com.ap.enotes_api_service.exception.ExistingDataException;
 import com.ap.enotes_api_service.exception.ResourceNotFoundException;
 import com.ap.enotes_api_service.repository.CategoryRepository;
+import com.ap.enotes_api_service.service.CacheManagerService;
 import com.ap.enotes_api_service.service.CategoryService;
 import com.ap.enotes_api_service.utils.Validation;
 
@@ -27,6 +30,8 @@ public class CategoryServiceImpl implements CategoryService {
 	private ModelMapper mapper;
 	@Autowired
 	private Validation validation;
+	@Autowired
+	private CacheManagerService cacheManagerService;
 	
 	@Override
 	public Boolean saveCategory(CategoryDto categoryDto) {
@@ -123,6 +128,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@Cacheable(value="getCategoryById", key = "#id")
 	public CategoryDto getCategoryById(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		
@@ -136,6 +142,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@CacheEvict(value="getCategoryById", key = "#id")
 	public Boolean deleteCategoryById(Integer id) {
 		// TODO Auto-generated method stub
 		Optional<Category> categoryById = categoryRepository.findById(id);
@@ -144,6 +151,10 @@ public class CategoryServiceImpl implements CategoryService {
 			Category category = categoryById.get();
 			category.setIsDeleted(true);
 			categoryRepository.save(category);
+			
+			//remove from cache
+			cacheManagerService.removeCacheByName(Arrays.asList("allCategory", "activeCategory"));
+			
 			return true;
 		}
 		
